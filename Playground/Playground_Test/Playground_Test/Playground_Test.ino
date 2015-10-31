@@ -227,6 +227,7 @@ void loop() {
 			commandFour(address);
 		}
 
+		//Flash a range (>5,12,0,255,0,10<. Only one can be this at a time
 		if (command == 5) {
 			commandFive(address);
 		}
