@@ -38,6 +38,43 @@ void setup() {
 	strip.show(); // Initialize all pixels to 'off'
 }
 
+void getArrayFromSerial(int* arr, int size) {
+	for (int i = 0; i < size; i++)
+	{
+		int read = Serial.parseInt();		
+		arr[i] = read;
+		Serial.println(arr[i]);
+	}
+}
+
+void commandOne(int address) {
+	int arr[3] = { 0 };	
+	Serial.println("Getting address");
+	getArrayFromSerial(arr, 3);
+
+	Serial.println("Command One");
+	Serial.print("address: ");
+	Serial.println(address);
+
+
+	strip.setPixelColor(address, arr[0], arr[1], arr[2]);
+}
+
+void commandTwo(int address) {
+	int arr[3] = { 0 };
+	Serial.println("Getting values");
+	getArrayFromSerial(arr, 4);
+
+	Serial.println("Command One");
+	Serial.print("address: ");
+	Serial.println(address);
+
+	int length = arr[3];
+
+	for (int i = address; i < address + length; i++) {
+		strip.setPixelColor(i, arr[0], arr[1], arr[2]);
+	}	
+}
 
 
 void loop() {
@@ -45,36 +82,34 @@ void loop() {
 	while (Serial.available() > 0) {
 		byte read = Serial.read();
 
-		Serial.println(read);
-
 		if (read != '>') {
 			continue;
 		}
+
 		int command = Serial.parseInt();
-		int address = Serial.parseInt();
-		int r = Serial.parseInt();
-		int g = Serial.parseInt();
-		int b = Serial.parseInt();
-		Serial.print(command);
-		Serial.print("-");
-		Serial.print(address);
-		Serial.print("-");
-		Serial.print(r);
-		Serial.print("-");
-		Serial.print(g);
-		Serial.print("-");
-		Serial.print(b);
-	
-		//Serial.write("Found command " + command);
-		if (Serial.read() == '<') {
-			Serial.println("Found command");
-			if (command == 1) {
-				strip.setPixelColor(address, r, g, b);
-			}
-			strip.show();
+		int address = Serial.parseInt();			
+		
+		if (command == 1) {
+			commandOne(address);
+			//strip.setPixelColor(address, r, g, b);
 		}
 
-		
+		if (command == 2) {
+			commandTwo(address);
+			//strip.setPixelColor(address, r, g, b);
+		}
+
+		int r = Serial.read();
+
+		if (r == '<') {
+			
+			strip.show();
+			Serial.println("Showing strip");
+		}
+		else {
+			Serial.println("**Not Showing strip");
+			Serial.println(r);
+		}
 	}
 
 	//if (Serial.available())

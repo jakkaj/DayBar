@@ -56,7 +56,7 @@ namespace TestConsole
                 var actualAbs = (int)actual;
 
                 port.Write($">1,{actualAbs},0,255,0<");
-                await Task.Delay(1000);
+                await Task.Delay(5000);
             }
 
             
