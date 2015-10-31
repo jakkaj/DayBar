@@ -29,6 +29,14 @@ uint32_t magenta = strip.Color(255, 0, 255);
 uint32_t orange = strip.Color(255, 165, 0);
 uint32_t green = strip.Color(0, 255, 0);
 
+uint32_t flashDotColor = 0;
+uint8_t flashDot = -1;
+uint8_t currentFlash = 0;
+
+uint32_t flashRangeColor = 0;
+uint8_t flashRangeStart = -1;
+uint8_t flashRangeLength = -1;
+
 
 void setup() {
 	Serial.begin(9600);
@@ -65,7 +73,7 @@ void commandTwo(int address) {
 	Serial.println("Getting values");
 	getArrayFromSerial(arr, 4);
 
-	Serial.println("Command One");
+	Serial.println("Command Two");
 	Serial.print("address: ");
 	Serial.println(address);
 
@@ -76,9 +84,119 @@ void commandTwo(int address) {
 	}	
 }
 
+void commandThree() {
+	rainbow(20);
+}
+
+void commandFour(int address) {
+	
+	Serial.println("Command Four");
+
+	if (address == -1) {
+		
+		Serial.println("Clearing");
+		flashDot = -1;
+		return;
+	}
+	int arr[3] = { 0 };
+	Serial.println("Getting address");
+	getArrayFromSerial(arr, 3);
+
+	Serial.println("Command Four");
+	Serial.print("address: ");
+	Serial.println(address);
+
+	flashDotColor = strip.Color(arr[0], arr[1], arr[2]);	
+
+	flashDot = address;
+}
+
+void commandFive(int address) {
+
+	Serial.println("Command Five flash range");
+
+	if (address == -1) {
+
+		Serial.println("Clearing");
+		flashRangeStart = -1;
+		return;
+	}
+
+	int arr[4] = { 0 };
+
+	Serial.println("Getting address");
+	getArrayFromSerial(arr, 4);
+	
+	Serial.print("address: ");
+	Serial.println(address);
+
+	flashRangeColor = strip.Color(arr[0], arr[1], arr[2]);
+
+	flashRangeStart = address;
+	flashRangeLength = arr[3];
+}
+
+void doFlashing() {
+	
+	boolean doFlash = false;
+
+	if (flashRangeColor != 0 && flashRangeStart != -1) {
+		doFlash = true;
+
+		int r = (uint8_t)(flashRangeColor >> 16);
+		int g = (uint8_t)(flashRangeColor >> 8);
+		int b = (uint8_t)flashRangeColor;
+
+		int rPercent = (r / 100) * currentFlash;
+		int gPercent = (g / 100) * currentFlash;
+		int bPercent = (b / 100) * currentFlash;
+
+		for (int i = flashRangeStart; i < flashRangeStart + flashRangeLength; i++) {
+			strip.setPixelColor(i, rPercent, gPercent, bPercent);
+		}
+	}
+
+	if (flashDotColor != 0 && flashDot != -1) {
+		doFlash = true;
+		int r = (uint8_t)(flashDotColor >> 16);
+		int g = (uint8_t)(flashDotColor >> 8);
+		int b = (uint8_t)flashDotColor;		
+
+		int rPercent = (r / 100) * currentFlash;
+		int gPercent = (g / 100) * currentFlash;
+		int bPercent = (b / 100) * currentFlash;
+
+		strip.setPixelColor(flashDot, rPercent, gPercent, bPercent);
+	}
+
+	if (doFlash) {
+
+		strip.show();
+		
+		delay(20);
+
+		if (currentFlash == 100) {
+			up = false;
+		}
+		else if (currentFlash == 0) {
+			up = true;
+		}
+
+		if (up) {
+			currentFlash++;
+		}
+		else {
+			currentFlash--;
+		}
+	}
+}
+
+
+
 
 void loop() {
 	
+
 	while (Serial.available() > 0) {
 		byte read = Serial.read();
 
@@ -89,14 +207,28 @@ void loop() {
 		int command = Serial.parseInt();
 		int address = Serial.parseInt();			
 		
+		//Set a single pixel (>1,12,0,0,255<
 		if (command == 1) {
-			commandOne(address);
-			//strip.setPixelColor(address, r, g, b);
+			commandOne(address);			
 		}
 
+		//Set a range with length >2,12,0,0,255,30<
 		if (command == 2) {
-			commandTwo(address);
-			//strip.setPixelColor(address, r, g, b);
+			commandTwo(address);			
+		}
+
+		//Do some effects
+		if (command == 3) {
+			commandThree();
+		}
+
+		//Flash a single pixel (>4,12,0,255,0<. Only one can be this at a time
+		if (command == 4) {
+			commandFour(address);
+		}
+
+		if (command == 5) {
+			commandFive(address);
 		}
 
 		int r = Serial.read();
@@ -111,6 +243,9 @@ void loop() {
 			Serial.println(r);
 		}
 	}
+
+
+	doFlashing();
 
 	//if (Serial.available())
 	//{//if there is data being recieved
