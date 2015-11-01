@@ -56,7 +56,7 @@ namespace StripLib
 
         public void Clear()
         {
-            SetRange(0, _range, 0, 0, 0);
+            SendCommand(">6,0<");
         }
     }
 }

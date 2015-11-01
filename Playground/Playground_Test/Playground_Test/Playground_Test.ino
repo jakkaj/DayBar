@@ -49,14 +49,14 @@ void setup() {
 void getArrayFromSerial(int* arr, int size) {
 	for (int i = 0; i < size; i++)
 	{
-		int read = Serial.parseInt();		
+		int read = Serial.parseInt();
 		arr[i] = read;
 		Serial.println(arr[i]);
 	}
 }
 
 void commandOne(int address) {
-	int arr[3] = { 0 };	
+	int arr[3] = { 0 };
 	Serial.println("Getting address");
 	getArrayFromSerial(arr, 3);
 
@@ -81,7 +81,7 @@ void commandTwo(int address) {
 
 	for (int i = address; i < address + length; i++) {
 		strip.setPixelColor(i, arr[0], arr[1], arr[2]);
-	}	
+	}
 }
 
 void commandThree() {
@@ -89,11 +89,11 @@ void commandThree() {
 }
 
 void commandFour(int address) {
-	
+
 	Serial.println("Command Four");
 
 	if (address == -1) {
-		
+
 		Serial.println("Clearing");
 		flashDot = -1;
 		return;
@@ -106,7 +106,7 @@ void commandFour(int address) {
 	Serial.print("address: ");
 	Serial.println(address);
 
-	flashDotColor = strip.Color(arr[0], arr[1], arr[2]);	
+	flashDotColor = strip.Color(arr[0], arr[1], arr[2]);
 
 	flashDot = address;
 }
@@ -126,7 +126,7 @@ void commandFive(int address) {
 
 	Serial.println("Getting address");
 	getArrayFromSerial(arr, 4);
-	
+
 	Serial.print("address: ");
 	Serial.println(address);
 
@@ -136,8 +136,20 @@ void commandFive(int address) {
 	flashRangeLength = arr[3];
 }
 
+void commandSix() {
+
+	Serial.println("Clear");
+
+	flashDot = -1;
+	flashRangeStart = -1;
+
+	for (int i = 0; i < 144; i++) {
+		strip.setPixelColor(i, 0, 0, 0);
+	}
+}
+
 void doFlashing() {
-	
+
 	boolean doFlash = false;
 
 	if (flashRangeColor != 0 && flashRangeStart != -1) {
@@ -160,7 +172,7 @@ void doFlashing() {
 		doFlash = true;
 		int r = (uint8_t)(flashDotColor >> 16);
 		int g = (uint8_t)(flashDotColor >> 8);
-		int b = (uint8_t)flashDotColor;		
+		int b = (uint8_t)flashDotColor;
 
 		int rPercent = (r / 100) * currentFlash;
 		int gPercent = (g / 100) * currentFlash;
@@ -172,7 +184,7 @@ void doFlashing() {
 	if (doFlash) {
 
 		strip.show();
-		
+
 		delay(20);
 
 		if (currentFlash == 100) {
@@ -195,7 +207,7 @@ void doFlashing() {
 
 
 void loop() {
-	
+
 
 	while (Serial.available() > 0) {
 		byte read = Serial.read();
@@ -205,16 +217,16 @@ void loop() {
 		}
 
 		int command = Serial.parseInt();
-		int address = Serial.parseInt();			
-		
+		int address = Serial.parseInt();
+
 		//Set a single pixel (>1,12,0,0,255<
 		if (command == 1) {
-			commandOne(address);			
+			commandOne(address);
 		}
 
 		//Set a range with length >2,12,0,0,255,30<
 		if (command == 2) {
-			commandTwo(address);			
+			commandTwo(address);
 		}
 
 		//Do some effects
@@ -232,10 +244,15 @@ void loop() {
 			commandFive(address);
 		}
 
+		if (command == 6) {
+			commandSix();
+		}
+
+
 		int r = Serial.read();
 
 		if (r == '<') {
-			
+
 			strip.show();
 			Serial.println("Showing strip");
 		}
@@ -334,7 +351,7 @@ void loop() {
 
 // Fill the dots one after the other with a color
 void colorWipe(uint32_t c, uint8_t wait) {
-	for (uint16_t i = 0; i<strip.numPixels(); i++) {
+	for (uint16_t i = 0; i < strip.numPixels(); i++) {
 		strip.setPixelColor(i, c);
 		strip.show();
 		delay(wait);
@@ -344,8 +361,8 @@ void colorWipe(uint32_t c, uint8_t wait) {
 void rainbow(uint8_t wait) {
 	uint16_t i, j;
 
-	for (j = 0; j<256; j++) {
-		for (i = 0; i<strip.numPixels(); i++) {
+	for (j = 0; j < 256; j++) {
+		for (i = 0; i < strip.numPixels(); i++) {
 			strip.setPixelColor(i, Wheel((i + j) & 255));
 		}
 		strip.show();
@@ -357,8 +374,8 @@ void rainbow(uint8_t wait) {
 void rainbowCycle(uint8_t wait) {
 	uint16_t i, j;
 
-	for (j = 0; j<256 * 5; j++) { // 5 cycles of all colors on wheel
-		for (i = 0; i< strip.numPixels(); i++) {
+	for (j = 0; j < 256 * 5; j++) { // 5 cycles of all colors on wheel
+		for (i = 0; i < strip.numPixels(); i++) {
 			strip.setPixelColor(i, Wheel(((i * 256 / strip.numPixels()) + j) & 255));
 		}
 		strip.show();
@@ -368,7 +385,7 @@ void rainbowCycle(uint8_t wait) {
 
 //Theatre-style crawling lights.
 void theaterChase(uint32_t c, uint8_t wait) {
-	for (int j = 0; j<10; j++) {  //do 10 cycles of chasing
+	for (int j = 0; j < 10; j++) {  //do 10 cycles of chasing
 		for (int q = 0; q < 3; q++) {
 			for (int i = 0; i < strip.numPixels(); i = i + 3) {
 				strip.setPixelColor(i + q, c);    //turn every third pixel on

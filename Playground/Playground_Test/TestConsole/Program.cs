@@ -6,6 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using StripLib;
+using TestConsole.Impl;
 
 namespace TestConsole
 {
@@ -13,11 +15,42 @@ namespace TestConsole
     {
         static void Main(string[] args)
         {
-            _writer();
+            _stripTest();
+            //_writer();
             while (true)
             {
                 Thread.Sleep(1000);
             }
+        }
+
+        static async void _stripTest()
+        {
+            var p = new StripWriter("COM4");
+
+            var strip = new Strip(StripSize.Size_144, p);
+
+            //strip.Rainbow();
+
+            var rnd = new Random();
+
+            while (true)
+            {
+                
+
+                strip.Clear();
+                //await Task.Delay(500);
+                
+                strip.SetDot(rnd.Next(0, 120), 255, 0, 0);
+                strip.SetDot(rnd.Next(0, 120), 0, 0, 255);
+                strip.FlashDot(rnd.Next(0, 120), 0, 255, 0);
+                strip.SetRange(rnd.Next(0, 120), 10, 255, 165, 0);
+                strip.SetRange(rnd.Next(0, 120), 10, 255, 165, 0);
+                strip.FlashRange(rnd.Next(0, 120), 12, 255, 0, 0);
+
+                await Task.Delay(6000);
+            }
+
+            
         }
 
         async static void _writer()
