@@ -40,7 +40,7 @@ uint8_t flashRangeLength = -1;
 
 void setup() {
 	Serial.begin(9600);
-
+	Serial.println("Strip is alive!");
 	strip.begin();
 	strip.setBrightness(30);
 	strip.show(); // Initialize all pixels to 'off'
@@ -69,13 +69,10 @@ void commandOne(int address) {
 }
 
 void commandTwo(int address) {
-	int arr[3] = { 0 };
+	int arr[4] = { 0 };
 	Serial.println("Getting values");
 	getArrayFromSerial(arr, 4);
-
-	Serial.println("Command Two");
-	Serial.print("address: ");
-	Serial.println(address);
+	
 
 	int length = arr[3];
 
@@ -219,6 +216,11 @@ void loop() {
 		int command = Serial.parseInt();
 		int address = Serial.parseInt();
 
+		Serial.print("command: ");
+		Serial.print(command);
+		Serial.print(" address: ");
+		Serial.println(address);
+
 		//Set a single pixel (>1,12,0,0,255<
 		if (command == 1) {
 			commandOne(address);
@@ -250,15 +252,18 @@ void loop() {
 
 
 		int r = Serial.read();
-
+		Serial.println("read val");
+		Serial.println(r);
 		if (r == '<') {
 
 			strip.show();
 			Serial.println("Showing strip");
+			break;
 		}
 		else {
 			Serial.println("**Not Showing strip");
 			Serial.println(r);
+			break;
 		}
 	}
 
