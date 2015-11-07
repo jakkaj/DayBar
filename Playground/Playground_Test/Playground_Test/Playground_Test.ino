@@ -1,3 +1,5 @@
+#include <SoftwareSerial.h>
+#include <SerialCommand.h>
 #include <Adafruit_NeoPixel.h>
 #ifdef __AVR__
 #include <avr/power.h>
@@ -10,6 +12,9 @@ boolean up = true;
 
 char blueToothVal;           //value sent over via bluetooth
 char lastValue;
+
+
+SerialCommand sCmd;
 
 // Parameter 1 = number of pixels in strip
 // Parameter 2 = Arduino pin number (most are valid)
@@ -37,11 +42,23 @@ uint32_t flashRangeColor = 0;
 uint8_t flashRangeStart = -1;
 uint8_t flashRangeLength = -1;
 
+bool dirty = false;
 
 void setup() {
 	Serial.begin(9600);
 	Serial.println("Strip is alive!");
+	
+	sCmd.addCommand("1", commandOne);
+	sCmd.addCommand("2", commandTwo);
+	sCmd.addCommand("3", commandThree);
+	sCmd.addCommand("4", commandFour);
+	sCmd.addCommand("5", commandFive);
+	sCmd.addCommand("6", commandSix);
+	
 	strip.begin();
+
+
+
 	strip.setBrightness(30);
 	strip.show(); // Initialize all pixels to 'off'
 }
@@ -49,26 +66,53 @@ void setup() {
 void getArrayFromSerial(int* arr, int size) {
 	for (int i = 0; i < size; i++)
 	{
-		int read = Serial.parseInt();
-		arr[i] = read;
+		int aNumber = getNumber();		
+		arr[i] = aNumber;
 		Serial.println(arr[i]);
 	}
 }
 
-void commandOne(int address) {
+int getNumber() {
+	int aNumber = -1;
+	
+	char *arg = sCmd.next();
+	if (arg != NULL)
+	{
+		aNumber = atoi(arg);
+	}
+
+	return aNumber;
+	
+}
+
+void commandOne() {
+
+	int address = getNumber();
+	
 	int arr[3] = { 0 };
-	Serial.println("Getting address");
+	
 	getArrayFromSerial(arr, 3);
 
 	Serial.println("Command One");
 	Serial.print("address: ");
 	Serial.println(address);
 
+	Serial.print("r: ");
+	Serial.println(arr[0]);
+
+	Serial.print("g: ");
+	Serial.println(arr[1]);
+
+	Serial.print("b: ");
+	Serial.println(arr[1]);
 
 	strip.setPixelColor(address, arr[0], arr[1], arr[2]);
+	dirty = true;
 }
 
-void commandTwo(int address) {
+void commandTwo() {
+	int address = getNumber();
+	
 	int arr[4] = { 0 };
 	Serial.println("Getting values");
 	getArrayFromSerial(arr, 4);
@@ -79,13 +123,17 @@ void commandTwo(int address) {
 	for (int i = address; i < address + length; i++) {
 		strip.setPixelColor(i, arr[0], arr[1], arr[2]);
 	}
+	dirty = true;
 }
 
 void commandThree() {
+	Serial.println("Rainbow");
 	rainbow(20);
 }
 
-void commandFour(int address) {
+void commandFour() {
+
+	int address = getNumber();
 
 	Serial.println("Command Four");
 
@@ -95,7 +143,9 @@ void commandFour(int address) {
 		flashDot = -1;
 		return;
 	}
+
 	int arr[3] = { 0 };
+
 	Serial.println("Getting address");
 	getArrayFromSerial(arr, 3);
 
@@ -106,9 +156,12 @@ void commandFour(int address) {
 	flashDotColor = strip.Color(arr[0], arr[1], arr[2]);
 
 	flashDot = address;
+	dirty = true;
 }
 
-void commandFive(int address) {
+void commandFive() {
+
+	int address = getNumber();
 
 	Serial.println("Command Five flash range");
 
@@ -131,6 +184,7 @@ void commandFive(int address) {
 
 	flashRangeStart = address;
 	flashRangeLength = arr[3];
+	dirty = true;
 }
 
 void commandSix() {
@@ -143,6 +197,7 @@ void commandSix() {
 	for (int i = 0; i < 144; i++) {
 		strip.setPixelColor(i, 0, 0, 0);
 	}
+	dirty = true;
 }
 
 void doFlashing() {
@@ -201,72 +256,19 @@ void doFlashing() {
 }
 
 
-
-
 void loop() {
 
-
-	while (Serial.available() > 0) {
-		byte read = Serial.read();
-
-		if (read != '>') {
-			continue;
-		}
-
-		int command = Serial.parseInt();
-		int address = Serial.parseInt();
-
-		Serial.print("command: ");
-		Serial.print(command);
-		Serial.print(" address: ");
-		Serial.println(address);
-
-		//Set a single pixel (>1,12,0,0,255<
-		if (command == 1) {
-			commandOne(address);
-		}
-
-		//Set a range with length >2,12,0,0,255,30<
-		if (command == 2) {
-			commandTwo(address);
-		}
-
-		//Do some effects
-		if (command == 3) {
-			commandThree();
-		}
-
-		//Flash a single pixel (>4,12,0,255,0<. Only one can be this at a time
-		if (command == 4) {
-			commandFour(address);
-		}
-
-		//Flash a range (>5,12,0,255,0,10<. Only one can be this at a time
-		if (command == 5) {
-			commandFive(address);
-		}
-
-		if (command == 6) {
-			commandSix();
-		}
-
-
-		int r = Serial.read();
-		Serial.println("read val");
-		Serial.println(r);
-		if (r == '<') {
-
-			strip.show();
-			Serial.println("Showing strip");
-			break;
-		}
-		else {
-			Serial.println("**Not Showing strip");
-			Serial.println(r);
-			break;
-		}
+	//1 Set a single pixel (>1,12,0,0,255<
+	//2 Set a range with length >2,12,0,0,255,30<
+	//3 Do some effects
+	//4 Flash a single pixel (>4,12,0,255,0<. Only one can be this at a time
+	//5 Flash a range (>5,12,0,255,0,10<. Only one can be this at a time
+	//6 clear
+	sCmd.readSerial();
+	if (dirty) {
+		dirty = false;
+		strip.show();
 	}
-
 
 	doFlashing();
 
