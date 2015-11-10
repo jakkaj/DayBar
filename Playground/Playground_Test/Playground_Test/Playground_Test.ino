@@ -48,16 +48,16 @@ void setup() {
 	Serial.begin(9600);
 	Serial.println("Strip is alive!");
 	
-	sCmd.addCommand("1", commandOne);
-	sCmd.addCommand("2", commandTwo);
-	sCmd.addCommand("3", commandThree);
-	sCmd.addCommand("4", commandFour);
-	sCmd.addCommand("5", commandFive);
-	sCmd.addCommand("6", commandSix);
+	sCmd.addCommand("a", commandOne);
+	sCmd.addCommand("b", commandTwo);
+	sCmd.addCommand("c", commandThree);
+	sCmd.addCommand("d", commandFour);
+	sCmd.addCommand("e", commandFive);
+	sCmd.addCommand("f", commandSix);
 	
 	strip.begin();
 
-
+	
 
 	strip.setBrightness(30);
 	strip.show(); // Initialize all pixels to 'off'
@@ -266,12 +266,13 @@ void loop() {
 	//6 clear
 	sCmd.readSerial();
 	if (dirty) {
+		Serial.println("Dirty!");
 		dirty = false;
 		strip.show();
 	}
 
 	doFlashing();
-
+	delay(20);
 	//if (Serial.available())
 	//{//if there is data being recieved
 	//	blueToothVal = Serial.read(); //read it
