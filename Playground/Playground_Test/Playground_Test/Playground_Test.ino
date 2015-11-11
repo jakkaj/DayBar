@@ -6,7 +6,7 @@
 #endif
 
 #define PIN 6
-
+#define SERIALCOMMAND_DEBUG
 int n = 0;
 boolean up = true;
 
@@ -45,7 +45,7 @@ uint8_t flashRangeLength = -1;
 bool dirty = false;
 
 void setup() {
-	Serial.begin(9600);
+	Serial.begin(19200);
 	Serial.println("Strip is alive!");
 	
 	sCmd.addCommand("a", commandOne);
