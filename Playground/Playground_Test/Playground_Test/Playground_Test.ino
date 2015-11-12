@@ -6,7 +6,7 @@
 #endif
 
 #define PIN 6
-#define SERIALCOMMAND_DEBUG
+
 int n = 0;
 boolean up = true;
 
@@ -54,13 +54,15 @@ void setup() {
 	sCmd.addCommand("d", commandFour);
 	sCmd.addCommand("e", commandFive);
 	sCmd.addCommand("f", commandSix);
-	
+	sCmd.addCommand("g", clearBuffer);
+	sCmd.addCommand("h", knightRider);
 	strip.begin();
 
 	
 
 	strip.setBrightness(30);
 	strip.show(); // Initialize all pixels to 'off'
+	knightRider();
 }
 
 void getArrayFromSerial(int* arr, int size) {
@@ -83,6 +85,31 @@ int getNumber() {
 
 	return aNumber;
 	
+}
+
+void knightRider() {
+	int outer = 0;
+	while (outer < 1) {
+		for (int i = 0; i < 144; i++) {
+			strip.setPixelColor(i - 1, 0, 0, 0);
+			strip.setPixelColor(i, 255, 0, 0);
+			strip.show();
+			delay(5);
+		}
+		for (int i = 143; i >= 0; i--) {
+			strip.setPixelColor(i + 1, 0, 0, 0);
+			strip.setPixelColor(i, 255, 0, 0);
+			strip.show();
+			delay(5);
+		}
+
+		outer++;		
+	}
+	commandSix();
+}
+
+void clearBuffer() {
+	sCmd.clearBuffer();
 }
 
 void commandOne() {
@@ -235,9 +262,7 @@ void doFlashing() {
 
 	if (doFlash) {
 
-		strip.show();
-
-		delay(20);
+		strip.show();		
 
 		if (currentFlash == 100) {
 			up = false;
