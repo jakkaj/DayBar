@@ -86,4 +86,5 @@ void processCommand() {
 // This gets set as the default handler, and gets called when no other command matches.
 void unrecognized(const char *command) {
 	Serial.println("What?");
-}
+}
+
