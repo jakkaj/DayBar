@@ -94,13 +94,13 @@ void knightRider() {
 			strip.setPixelColor(i - 1, 0, 0, 0);
 			strip.setPixelColor(i, 255, 0, 0);
 			strip.show();
-			delay(5);
+			delay(1);
 		}
 		for (int i = 143; i >= 0; i--) {
 			strip.setPixelColor(i + 1, 0, 0, 0);
 			strip.setPixelColor(i, 255, 0, 0);
-			strip.show();
-			delay(5);
+			strip.show();	
+			delay(1);
 		}
 
 		outer++;		
@@ -115,6 +115,10 @@ void clearBuffer() {
 void commandOne() {
 
 	int address = getNumber();
+	
+	if (address == flashDot) {
+		flashDot = -1;
+	}
 	
 	int arr[3] = { 0 };
 	
@@ -140,6 +144,10 @@ void commandOne() {
 void commandTwo() {
 	int address = getNumber();
 	
+	if (address == flashDot) {
+		flashDot = -1;
+	}
+
 	int arr[4] = { 0 };
 	Serial.println("Getting values");
 	getArrayFromSerial(arr, 4);
@@ -162,7 +170,7 @@ void commandFour() {
 
 	int address = getNumber();
 
-	Serial.println("Command Four");
+	Serial.println("Command Four");	
 
 	if (address == -1) {
 
@@ -289,7 +297,8 @@ void loop() {
 	//4 Flash a single pixel (>4,12,0,255,0<. Only one can be this at a time
 	//5 Flash a range (>5,12,0,255,0,10<. Only one can be this at a time
 	//6 clear
-	sCmd.readSerial();
+	sCmd.readSerial();	
+
 	if (dirty) {
 		Serial.println("Dirty!");
 		dirty = false;
@@ -297,6 +306,9 @@ void loop() {
 	}
 
 	doFlashing();
+
+	
+
 	delay(20);
 	//if (Serial.available())
 	//{//if there is data being recieved
