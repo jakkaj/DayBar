@@ -22,13 +22,13 @@ namespace DayBar.UWP.Impl
         private readonly IEntitySerialiser _entitySerialiser;
 
         public OutlookCalendarRepo(UserOperations userOperations, IHttpTransferrer downloader, IEntitySerialiser entitySerialiser)
-            :base (downloader, entitySerialiser, "")
+            : base(downloader, entitySerialiser, "")
         {
             _userOperations = userOperations;
             _entitySerialiser = entitySerialiser;
         }
 
-        public async Task<XResult<List<CalendarEntry>>>  GetRange(DateTime start, DateTime end)
+        public async Task<XResult<List<CalendarEntry>>> GetRange(DateTime start, DateTime end)
         {
             var _currentUser = await _userOperations.GetCurrentUserAsync();
 
@@ -80,20 +80,27 @@ namespace DayBar.UWP.Impl
                 {
                     version += string.Join(",", thing.Categories);
                 }
-                resultList.Add(new CalendarEntry
+
+                var cal = new CalendarEntry
                 {
-                    Start = DateTime.Parse(thing.Start), 
+                    Start = DateTime.Parse(thing.Start),
                     End = DateTime.Parse(thing.End),
                     Subject = thing.Subject,
                     Id = thing.Id,
                     Type = thing.Type,
                     Categories = thing.Categories,
                     Version = version
-                });
-            }
-          
+                };
 
-            return new XResult<List<CalendarEntry>>(resultList) ;
+                if (cal.Start.Date != cal.End.Date)
+                {
+                    continue;
+                }
+                resultList.Add(cal);
+            }
+
+
+            return new XResult<List<CalendarEntry>>(resultList);
         }
 
 

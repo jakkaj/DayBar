@@ -40,7 +40,7 @@ namespace DayBar.UWP
         public MainPage()
         {
             this.InitializeComponent();
-            
+
             _init();
         }
 
@@ -53,7 +53,7 @@ namespace DayBar.UWP
 
             _strip.Clear();
             await Task.Delay(3000);
-           // _strip.Rainbow();
+            // _strip.Rainbow();
 
             //return;
 
@@ -69,8 +69,8 @@ namespace DayBar.UWP
         async Task _go()
         {
             var c = ContainerHost.Container.Resolve<ICalendarService>();
-            
-           
+
+
 
             //await Task.Delay(1000);
             //s.Rainbow();
@@ -152,7 +152,7 @@ namespace DayBar.UWP
                                 r = 148;
                                 g = 0;
                                 b = 211;
-                                
+
                             }
                             if (cName.IndexOf("red") != -1)
                             {
@@ -172,6 +172,7 @@ namespace DayBar.UWP
                     _strip.SetRange((int)actualStart, (int)actualEnd, r, g, b, i.Version);
 
                 }
+                await Task.Delay(3000);
                 _updateNowDot();
                 //s.SetRange(0, 144, 0, 150, 0);
             }
@@ -182,9 +183,9 @@ namespace DayBar.UWP
         {
 
             await _go();
-            
 
-           
+
+
 
             while (true)
             {

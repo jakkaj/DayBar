@@ -1,15 +1,15 @@
 ﻿{
   "dependencies": {
     "Microsoft.Azure.ActiveDirectory.GraphClient": "2.1.0",
-    "Microsoft.IdentityModel.Clients.ActiveDirectory": "2.19.208020213",
+    "Microsoft.IdentityModel.Clients.ActiveDirectory": "2.19.211181450",
     "Microsoft.NETCore.UniversalWindowsPlatform": "5.0.0",
     "Microsoft.Office365.Discovery": "1.0.22",
     "Microsoft.Office365.OAuth.Windows": "1.0.22",
     "Microsoft.Office365.OutlookServices": "1.0.35",
     "Microsoft.Office365.SharePoint": "1.0.22",
     "newtonsoft.json": "7.0.1",
-    "Xamarin.Forms": "1.5.1.6471",
-    "XamlingCore": "2.0.143"
+    "Xamarin.Forms": "2.0.0.6482",
+    "XamlingCore": "2.0.144"
   },
   "frameworks": {
     "uap10.0": {}
