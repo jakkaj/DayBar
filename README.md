@@ -1,8 +1,13 @@
 # DayBar (alpha)
 ###DayBar - the LED strip that plans your day
 
-Using a mixture of Arduino and Desktop software to make a strip that shows you what your day looks like. Now is the green dot. 
-Meetings are orange bars!
+Boost your productivity. See your day in a glance with your DayBar and take back control! 
+
+With so many meetings and all the reminders and pop ups alerts - it's becoming harder and harder to be productive! With DayBar you and your team can just look up and see your day in a single glance.
+
+All your appointments are shown as lit up areas on the strip, with "now" a flashing green dot that moves along as the day progresses. It will even color the strips according to categories in Outlook (as long as they have the default names). 
+
+Using a mixture of Arduino and Desktop software to make a strip that shows you what your day looks like.
 
 The best part is you can make it yourself! Mine cost about $150 or so.
 
