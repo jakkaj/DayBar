@@ -60,8 +60,8 @@ namespace Daybar.Core.Model.Strip
                 {
                     continue;
                 }
-                if (element.Start >= elementToRemove.Start &&
-                    element.Start + element.Length <= elementToRemove.Start + elementToRemove.Length)
+                if (element.Start <= elementToRemove.Start &&
+                    element.Start + element.Length >= elementToRemove.Start + elementToRemove.Length)
                 {
                     //redraw this item as it intersected the removed item
                     _draw(element);
