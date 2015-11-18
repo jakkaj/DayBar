@@ -1,4 +1,4 @@
-# DayBar
+# DayBar (alpha)
 ###DayBar - the LED strip that plans your day
 
 Using a mixture of Arduino and Desktop software to make a strip that shows you what your day looks like. Now is the green dot. 
@@ -64,3 +64,34 @@ If you don't know how to install libraries, Google it :P. Basically, grab the co
 
 Once you do that you should be able to deploy to your Adruino. If deployment is success then the strip should do a single Cylon/Knight Rider red blip thingy. 
 
+#### Get an Offce 356 developer subs 
+Follow the instructions on the [Office 365 Windows Start](https://github.com/OfficeDev/O365-Windows-Start) GitHub page to set up an Office 365 developer account. I used this proejed as the basis for the UWP that powers the DayBar. 
+
+#### Connect your connected service
+Once you have that all going, you'll need to link the UWP app to your Office 365 account. 
+
+Open the UWP app project from the [Windows](https://github.com/jakkaj/DayBar/tree/master/Windows) folder. 
+
+* Right click on references and select Add Connected Service
+* Select Office 365 API's
+* Log in
+
+Enter the following permissions
+* Calendar -> read 
+* Users and groups -> access directory as you, read directory data, sign you in and read your profile
+
+Remember kids with permissions less is more. 
+
+Once you've done that you should be able to just run the app and log in!
+
+####Exploring the code a little. 
+
+As I mentioned I based the app on the Office 365 Windows Starter example, but I only ended up using the example code to log in and get a token for O365. 
+
+Once i have that I use the direct API to get things and deserialise them using JSON.NET. 
+
+```C#
+url = $"{url}/me/CalendarView?$top=30&&startDateTime={tStart.ToString("u")}&endDateTime={tEnd.ToString("u")}";
+```
+
+Look in TransferConfigService to see where the config adds in to the token for requests to O365. 
