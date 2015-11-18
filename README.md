@@ -7,8 +7,6 @@ With so many meetings and all the reminders and pop ups alerts - it's becoming h
 
 All your appointments are shown as lit up areas on the strip, with "now" a flashing green dot that moves along as the day progresses. It will even color the strips according to categories in Outlook (as long as they have the default names). 
 
-Using a mixture of Arduino and Desktop software to make a strip that shows you what your day looks like.
-
 The best part is you can make it yourself! Mine cost about $150 or so.
 
 Basically the system uses an Arduino to drive the strip, and a PC tells the Arduino which pixels to set which color via a serial USB interface. The PC app is built using Windows 10 UWP. 
