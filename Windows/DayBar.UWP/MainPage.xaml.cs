@@ -222,10 +222,10 @@ namespace DayBar.UWP
 
             var actualAbs = (int)actual;
 
-            //if (actualAbs == _lastActual)
-            //{
-            //    return;
-            //}
+            if (actualAbs == _lastActual)
+            {
+                return;
+            }
 
             //actualAbs += _accelerate;
 
