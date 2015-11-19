@@ -45,7 +45,7 @@ uint8_t flashRangeLength = -1;
 bool dirty = false;
 
 void setup() {
-	Serial.begin(19200);
+	Serial.begin(115200);
 	Serial.println("Strip is alive!");
 	
 	sCmd.addCommand("a", commandOne);

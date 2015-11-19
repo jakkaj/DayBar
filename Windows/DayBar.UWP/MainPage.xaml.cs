@@ -204,6 +204,8 @@ namespace DayBar.UWP
 
         }
 
+        private int _accelerate = 0;
+
         void _updateNowDot()
         {
             var tNow = DateTime.Now;
@@ -220,10 +222,12 @@ namespace DayBar.UWP
 
             var actualAbs = (int)actual;
 
-            if (actualAbs == _lastActual)
-            {
-                return;
-            }
+            //if (actualAbs == _lastActual)
+            //{
+            //    return;
+            //}
+
+            //actualAbs += _accelerate;
 
             _lastActual = actualAbs;
 
@@ -237,6 +241,7 @@ namespace DayBar.UWP
             {
                 _strip.FlashDot(143, 255, 0, 10);
             }
+            _accelerate ++;
         }
     }
 }

@@ -53,14 +53,8 @@ namespace DayBar.UWP.Impl
                 {
                     if (_commands.Count > 0)
                     {
-                        //var c = "";
-                        //while (_commands.Count > 0)
-                        //{
-                        //    c = c + ">>>" + _commands.Dequeue();
-                        //}
-
                         var command = _commands.Dequeue();
-                        await _write("g\n");
+                       
                         await _write($"{command}\n");
                         Debug.WriteLine($"Sending: {command}");
                         
@@ -89,6 +83,9 @@ namespace DayBar.UWP.Impl
                 {
                     Debug.WriteLine($"Bytes: {bytesWritten}");
                 }
+
+               
+
             }
             catch (Exception ex)
             {
@@ -135,7 +132,7 @@ namespace DayBar.UWP.Impl
 
                     _serialPort.WriteTimeout = TimeSpan.FromMilliseconds(1000);
                     _serialPort.ReadTimeout = TimeSpan.FromMilliseconds(1000);
-                    _serialPort.BaudRate = 19200;
+                    _serialPort.BaudRate = 115200;
                     _serialPort.Parity = SerialParity.None;
                     _serialPort.StopBits = SerialStopBitCount.One;
                     _serialPort.DataBits = 8;
