@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using Autofac;
+﻿using Autofac;
 using Daybar.Core.Glue;
 using XamlingCore.NET.Glue;
 using XamlingCore.Portable.Data.Glue;
@@ -18,7 +13,7 @@ namespace DaybarWPF.Glue
 
             SharedGlue.Build(Builder);
 
-            Builder.RegisterModule<UWPModule>();
+            Builder.RegisterModule<WPFModule>();
 
             Container = Builder.Build();
             ContainerHost.Container = Container;

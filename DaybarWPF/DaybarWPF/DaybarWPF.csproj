@@ -208,12 +208,16 @@
       <Name>DayBar.Contract</Name>
     </ProjectReference>
     <ProjectReference Include="..\Daybar.Core\Daybar.Core.csproj">
-      <Project>{B45057E9-F8EA-430A-AA0D-492319DDA5D1}</Project>
+      <Project>{b45057e9-f8ea-430a-aa0d-492319dda5d1}</Project>
       <Name>Daybar.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\DayBar.Entity\DayBar.Entity.csproj">
       <Project>{5cf307ff-bb33-4fb1-9553-047d12f51565}</Project>
       <Name>DayBar.Entity</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DayBar.Net\DayBar.Net.csproj">
+      <Project>{c94458ab-c40e-47c1-945c-a661aca6c7c4}</Project>
+      <Name>DayBar.Net</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
