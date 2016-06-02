@@ -25,7 +25,7 @@ namespace DaybarWPF
         {
             InitializeComponent();
             this.Activated += MainWindow_Activated;
-            
+            _top();
         }
 
         async void _top()
