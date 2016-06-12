@@ -33,7 +33,7 @@ namespace Office365Api.Helpers
             private set;
         }
 
-        public async void EnsureAuthenticationContext(String authority, object ownerWindow)
+        public async Task EnsureAuthenticationContext(String authority, object ownerWindow)
         {
             if (this.AuthenticationContext == null)
             {

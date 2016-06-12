@@ -40,27 +40,31 @@ namespace DaybarWPF
             }
         }
 
-       
+
 
         private void MainWindow_Activated(object sender, EventArgs e)
         {
-           
-          //  _showLogin(); 
-                   }
+            //_showLogin();
+        }
 
-        void _showLogin()
+        async void _showLogin()
         {
+            await Task.Delay(1000);
             IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
 
             AuthenticationHelper authenticationHelper = new AuthenticationHelper();
-            authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle);
+            await authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle);
 
+            var c = new CalendarHelper(authenticationHelper);
+
+            var events = await c.GetCalendarEvents();
+            var t = events;
         }
 
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-                _showLogin();
+            _showLogin();
         }
     }
 }
