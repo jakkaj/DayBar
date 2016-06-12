@@ -18,7 +18,7 @@ namespace DaybarWPF.Glue
 
             SharedGlue.Build(Builder);
 
-            Builder.RegisterModule<UWPModule>();
+            //Builder.RegisterModule<UWPModule>();
 
             Container = Builder.Build();
             ContainerHost.Container = Container;

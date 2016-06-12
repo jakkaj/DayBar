@@ -8,11 +8,14 @@ using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using DaybarWPF.Util;
+using DaybarWPF.View;
+using Office365Api.Helpers;
 
 namespace DaybarWPF
 {
@@ -41,25 +44,23 @@ namespace DaybarWPF
 
         private void MainWindow_Activated(object sender, EventArgs e)
         {
-            _position();
+           
+          //  _showLogin(); 
+                   }
+
+        void _showLogin()
+        {
+            IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
+
+            AuthenticationHelper authenticationHelper = new AuthenticationHelper();
+            authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle);
+
         }
 
-        void _position()
-        {
-            var tb = WindowsTaskbar.TaskbarPostion;
-            this.Left = 0;
-            this.Top = 0;
-            this.Width = 0;
-            this.Height = 0;
 
-            var pLeft = this.PointFromScreen(new Point(tb.Left, tb.Top));
-            var pHeight = this.PointFromScreen(new Point(tb.Width, tb.Height));
-            
-            this.Left = pLeft.X;
-            this.Top = pLeft.Y - 5;
-            this.Height = 2;
-            this.Width = pHeight.X;
-            var t = tb;
+        private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
+        {
+                _showLogin();
         }
     }
 }

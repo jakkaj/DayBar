@@ -33,7 +33,7 @@ namespace Office365Api.Helpers
             private set;
         }
 
-        public void EnsureAuthenticationContext(String authority)
+        public async void EnsureAuthenticationContext(String authority, object ownerWindow)
         {
             if (this.AuthenticationContext == null)
             {
@@ -46,12 +46,15 @@ namespace Office365Api.Helpers
                     this.AuthenticationContext = new AuthenticationContext(tokenCacheItem.Authority);
                 }
             }
-
+            //this.AuthenticationContext
+            //var assertion = new ClientAssertion();
+            var p = new PlatformParameters(PromptBehavior.Always, ownerWindow);
             this.AuthenticationResult =
-                this.AuthenticationContext.AcquireToken(
+                await this.AuthenticationContext.AcquireTokenAsync(
                     Office365ServicesUris.AADGraphAPIResourceId,
                     ClientId,
-                    new Uri(RedirectUri));
+                    new Uri(RedirectUri),
+                    p);
         }
 
         public void EnsureAuthenticationContext(TokenCache tokenCache)

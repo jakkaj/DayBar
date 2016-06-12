@@ -14,6 +14,8 @@
     <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
     <WarningLevel>4</WarningLevel>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -83,6 +85,14 @@
       <HintPath>..\packages\Microsoft.Office365.Discovery.1.0.22\lib\portable-net40+sl5+wp8+win8+MonoAndroid10+MonoTouch10+WindowsPhoneApp81\Microsoft.Office365.Discovery.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Microsoft.Office365.OAuth, Version=1.0.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office365.OAuth.Windows.1.0.22\lib\net45\Microsoft.Office365.OAuth.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
+    <Reference Include="Microsoft.Office365.OAuth.WindowsForms, Version=1.0.22.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.Office365.OAuth.Windows.1.0.22\lib\net45\Microsoft.Office365.OAuth.WindowsForms.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Microsoft.Office365.OutlookServices.Portable, Version=1.0.41.0, Culture=neutral, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Office365.OutlookServices.1.0.41.0\lib\portable-net45+win+wpa81+wp80\Microsoft.Office365.OutlookServices.Portable.dll</HintPath>
       <Private>True</Private>
@@ -142,16 +152,13 @@
     <Compile Include="Impl\OutlookCalendarRepo.cs" />
     <Compile Include="Impl\OutlookCalendarResultEntitye.cs" />
     <Compile Include="Impl\OutlookTokenGetService.cs" />
-    <Compile Include="Office365\AuthenticationHelper.cs" />
-    <Compile Include="Office365\CalendarOperations.cs" />
-    <Compile Include="Office365\ContactsOperations.cs" />
-    <Compile Include="Office365\DiscoveryServiceCache.cs" />
-    <Compile Include="Office365\Extensions.cs" />
-    <Compile Include="Office365\FileOperations.cs" />
-    <Compile Include="Office365\MailOperations.cs" />
-    <Compile Include="Office365\MessageDialogHelper.cs" />
-    <Compile Include="Office365\UserOperations.cs" />
     <Compile Include="Util\TaskBarUtils.cs" />
+    <Compile Include="View\BarView.xaml.cs">
+      <DependentUpon>BarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\LoginView.xaml.cs">
+      <DependentUpon>LoginView.xaml</DependentUpon>
+    </Compile>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -164,6 +171,14 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="View\BarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\LoginView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
@@ -215,12 +230,18 @@
       <Project>{5cf307ff-bb33-4fb1-9553-047d12f51565}</Project>
       <Name>DayBar.Entity</Name>
     </ProjectReference>
+    <ProjectReference Include="..\Office365Api.Helpers\Office365Api.Helpers.csproj">
+      <Project>{9B04C58C-B3DC-4690-A391-779F6D70E566}</Project>
+      <Name>Office365Api.Helpers</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
-  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" />
-  <Target Name="EnsureBclBuildImported" BeforeTargets="BeforeBuild" Condition="'$(BclBuildImported)' == ''">
-    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="This project references NuGet package(s) that are missing on this computer. Enable NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=317567." HelpKeyword="BCLBUILD2001" />
-    <Error Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.14\tools\Microsoft.Bcl.Build.targets')" Text="The build restored NuGet packages. Build the project again to include these packages in the build. For more information, see http://go.microsoft.com/fwlink/?LinkID=317568." HelpKeyword="BCLBUILD2002" />
+  <Import Project="..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets" Condition="Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\Microsoft.Bcl.Build.1.0.21\build\Microsoft.Bcl.Build.targets'))" />
   </Target>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

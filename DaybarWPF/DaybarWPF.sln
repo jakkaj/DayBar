@@ -13,6 +13,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Daybar.Core", "Daybar.Core\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DayBar.Entity", "DayBar.Entity\DayBar.Entity.csproj", "{5CF307FF-BB33-4FB1-9553-047D12F51565}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Office365Api.Helpers", "Office365Api.Helpers\Office365Api.Helpers.csproj", "{9B04C58C-B3DC-4690-A391-779F6D70E566}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -35,6 +37,10 @@ Global
 		{5CF307FF-BB33-4FB1-9553-047D12F51565}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5CF307FF-BB33-4FB1-9553-047D12F51565}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{5CF307FF-BB33-4FB1-9553-047D12F51565}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9B04C58C-B3DC-4690-A391-779F6D70E566}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
