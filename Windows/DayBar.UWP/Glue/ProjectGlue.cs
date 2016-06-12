@@ -1,4 +1,5 @@
 ﻿using Autofac;
+using Autofac.Core;
 using Daybar.Core.Glue;
 using XamlingCore.Portable.Data.Glue;
 using XamlingCore.Windows8.Glue;
