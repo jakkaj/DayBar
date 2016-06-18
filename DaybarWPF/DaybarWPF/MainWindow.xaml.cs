@@ -13,9 +13,11 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Autofac;
 using DaybarWPF.Util;
 using DaybarWPF.View;
 using Office365Api.Helpers;
+using XamlingCore.Portable.Data.Glue;
 
 namespace DaybarWPF
 {
@@ -33,11 +35,11 @@ namespace DaybarWPF
 
         async void _top()
         {
-            while (true)
-            {
-                await Task.Delay(500);
-                this.Topmost = true;
-            }
+            //while (true)
+            //{
+            //    await Task.Delay(500);
+            //    this.Topmost = true;
+            //}
         }
 
 
@@ -52,7 +54,9 @@ namespace DaybarWPF
             await Task.Delay(1000);
             IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
 
-            AuthenticationHelper authenticationHelper = new AuthenticationHelper();
+            var authenticationHelper = ContainerHost.Container.Resolve<AuthenticationHelper>();
+
+            
             await authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle);
 
             var c = new CalendarHelper(authenticationHelper);

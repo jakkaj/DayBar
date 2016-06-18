@@ -128,6 +128,12 @@
     <None Include="app.config" />
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DayBar.Contract\DayBar.Contract.csproj">
+      <Project>{A41A2535-CE5F-48B3-B130-A7A0D3A58623}</Project>
+      <Name>DayBar.Contract</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

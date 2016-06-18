@@ -5,15 +5,26 @@ using Microsoft.Office365.SharePoint.CoreServices;
 using System;
 using System.Collections.Generic;
 using System.Configuration;
+using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DayBar.Contract.Repo;
+using Microsoft.Office365.SharePoint.FileServices;
 
 namespace Office365Api.Helpers
 {
     public class AuthenticationHelper
     {
+        private readonly ICachePersist _cachePersist;
+
+        public AuthenticationHelper(ICachePersist cachePersist)
+        {
+            _cachePersist = cachePersist;
+        }
+
+
         public static readonly string AuthorizationUri = ConfigurationManager.AppSettings["ida:AuthorizationUri"].ToString();
         public static readonly string ClientId = ConfigurationManager.AppSettings["ida:ClientId"].ToString();
 
@@ -35,26 +46,43 @@ namespace Office365Api.Helpers
 
         public async Task EnsureAuthenticationContext(String authority, object ownerWindow)
         {
+            
+
             if (this.AuthenticationContext == null)
             {
-                this.AuthenticationContext = new AuthenticationContext(authority);
+                var cache = _cachePersist.Read();
 
-                var tokenCacheItem = AuthenticationContext.TokenCache.ReadItems().FirstOrDefault();
-
-                if (tokenCacheItem != null)
+                if (cache != null)
                 {
-                    this.AuthenticationContext = new AuthenticationContext(tokenCacheItem.Authority);
+                    var t = new TokenCache(cache);
+                    this.AuthenticationContext = new AuthenticationContext(authority, t);
                 }
+                else
+                {
+                    this.AuthenticationContext = new AuthenticationContext(authority);
+                }
+                
+
+                //var tokenCacheItem = AuthenticationContext.TokenCache.ReadItems().FirstOrDefault();
+
+                //if (tokenCacheItem != null)
+                //{
+                //    this.AuthenticationContext = new AuthenticationContext(tokenCacheItem.Authority);
+                //}
             }
             //this.AuthenticationContext
             //var assertion = new ClientAssertion();
-            var p = new PlatformParameters(PromptBehavior.Always, ownerWindow);
+            var p = new PlatformParameters(PromptBehavior.Auto, ownerWindow);
             this.AuthenticationResult =
                 await this.AuthenticationContext.AcquireTokenAsync(
                     Office365ServicesUris.AADGraphAPIResourceId,
                     ClientId,
                     new Uri(RedirectUri),
                     p);
+
+            var tokenCache = AuthenticationContext.TokenCache.Serialize();
+            
+            _cachePersist.Write(tokenCache);
         }
 
         public void EnsureAuthenticationContext(TokenCache tokenCache)

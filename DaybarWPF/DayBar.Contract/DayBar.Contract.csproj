@@ -37,6 +37,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Auth\ITokenGetService.cs" />
+    <Compile Include="Repo\ICachePersist.cs" />
     <Compile Include="Repo\ICalendarRepo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Service\ICalendarService.cs" />

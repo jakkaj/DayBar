@@ -106,6 +106,7 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.Configuration" />
     <Reference Include="System.Data" />
     <Reference Include="System.Drawing" />
     <Reference Include="System.Net.Http.Extensions, Version=2.2.29.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
@@ -149,6 +150,7 @@
     </ApplicationDefinition>
     <Compile Include="Glue\ProjectGlue.cs" />
     <Compile Include="Glue\WPFModule.cs" />
+    <Compile Include="Impl\CachePersist.cs" />
     <Compile Include="Impl\OutlookCalendarRepo.cs" />
     <Compile Include="Impl\OutlookCalendarResultEntitye.cs" />
     <Compile Include="Impl\OutlookTokenGetService.cs" />

@@ -5,6 +5,7 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using DaybarWPF.Glue;
 
 namespace DaybarWPF
 {
@@ -13,5 +14,12 @@ namespace DaybarWPF
     /// </summary>
     public partial class App : Application
     {
+        public ProjectGlue Glue { get; set; }
+        public App()
+        {
+            Glue = new ProjectGlue();
+            Glue.Init();
+        }
     }
+
 }
