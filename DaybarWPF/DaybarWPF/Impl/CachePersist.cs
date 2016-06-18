@@ -36,7 +36,8 @@ namespace DaybarWPF.Impl
 
         string _cacheFile()
         {
-            var file = $"{Environment.SpecialFolder.ApplicationData}/daybar/cache.dat";
+            var ad = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
+            var file = $"{ad}\\daybar\\cache.dat";
 
             return file;
         }
