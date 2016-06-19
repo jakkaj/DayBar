@@ -14,6 +14,20 @@ namespace Office365Api.Helpers
         {
         }
 
+        public async Task<string> GetCalendarToken()
+        {
+            return await AuthenticationHelper.GetOutlookToken();
+        }
+
+        public async Task<OutlookServicesClient> GetClient()
+        {
+            var client = await this.AuthenticationHelper
+               .EnsureOutlookServicesClientCreatedAsync(
+               Office365Capabilities.Calendar.ToString());
+
+            return client;
+        }
+
         public async Task<IOrderedEnumerable<IEvent>> GetCalendarEvents()
         {
             var client = await this.AuthenticationHelper

@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using DayBar.Contract.Service;
 using DayBar.Tests.Glue;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Office365Api.Helpers;
@@ -17,15 +19,28 @@ namespace DayBar.Tests.Tests
     {
 
         [TestMethod]
-        public async Task TestAuth()
+        public async Task TestServiceMethod()
         {
-            var authenticationHelper = ContainerHost.Container.Resolve<AuthenticationHelper>();
-            authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/");
+            Auth();
+            
+            var calService = Resolve<ICalendarService>();
+
+            var events = await calService.GetToday();
+
+            Assert.IsNotNull(events);
+        }
+
+        [TestMethod]
+        public async Task TestDirect()
+        {
+            var authenticationHelper = Auth();
 
             var c = new CalendarHelper(authenticationHelper);
-
+           
             var events = await c.GetCalendarEvents();
-            var t = events;
+            Assert.IsNotNull(events);
+            Assert.IsFalse(!events.Any());
+            Debug.WriteLine($"{events.Count()} events found");
         }
     }
 }

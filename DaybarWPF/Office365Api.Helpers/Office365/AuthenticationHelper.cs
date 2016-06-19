@@ -62,7 +62,7 @@ namespace Office365Api.Helpers
             }
         }
 
-        public async Task EnsureAuthenticationContext(String authority, object ownerWindow)
+        public async Task EnsureAuthenticationContext(String authority, object ownerWindow, bool force)
         {
             
 
@@ -90,7 +90,7 @@ namespace Office365Api.Helpers
             }
             //this.AuthenticationContext
             //var assertion = new ClientAssertion();
-            var p = new PlatformParameters(PromptBehavior.Auto, ownerWindow);
+            var p = new PlatformParameters(force ? PromptBehavior.Always : PromptBehavior.Auto, ownerWindow);
             this.AuthenticationResult =
                 await this.AuthenticationContext.AcquireTokenAsync(
                     Office365ServicesUris.AADGraphAPIResourceId,
@@ -161,6 +161,30 @@ namespace Office365Api.Helpers
 
                 return new OutlookServicesClient(dcr.ServiceEndpointUri,
                     async () => { return await GetAccessTokenForServiceAsync(dcr.ServiceResourceId); });
+            }
+            catch (AdalException exception)
+            {
+                // Handle token acquisition failure
+                if (exception.ErrorCode == AdalError.FailedToAcquireTokenSilently)
+                {
+                    this.AuthenticationContext.TokenCache.Clear();
+                    throw exception;
+                }
+                return null;
+            }
+        }
+
+        public async Task<string> GetOutlookToken()
+        {
+            try
+            {
+                DiscoveryClient discoveryClient = new DiscoveryClient(
+                     Office365ServicesUris.DiscoveryServiceEndpointUri,
+                     async () => { return await GetAccessTokenForServiceAsync(Office365ServicesUris.DiscoveryServiceResourceId); });
+
+                var dcr = await discoveryClient.DiscoverCapabilityAsync(Office365Capabilities.Calendar.ToString());
+
+                return await GetAccessTokenForServiceAsync(dcr.ServiceResourceId);
             }
             catch (AdalException exception)
             {

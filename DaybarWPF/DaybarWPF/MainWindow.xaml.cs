@@ -49,7 +49,7 @@ namespace DaybarWPF
             //_showLogin();
         }
 
-        async void _showLogin()
+        async void _showLogin(bool force)
         {
             await Task.Delay(1000);
             IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
@@ -57,7 +57,7 @@ namespace DaybarWPF
             var authenticationHelper = ContainerHost.Container.Resolve<AuthenticationHelper>();
 
             
-            await authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle);
+            await authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle, force);
 
             var c = new CalendarHelper(authenticationHelper);
 
@@ -68,7 +68,12 @@ namespace DaybarWPF
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {
-            _showLogin();
+            _showLogin(false);
+        }
+
+        private void ButtonBase2_OnClick(object sender, RoutedEventArgs e)
+        {
+            _showLogin(true);
         }
     }
 }

@@ -19,7 +19,10 @@ namespace DaybarWPF.Glue
         {
             builder.RegisterType<AuthenticationHelper>().AsSelf().SingleInstance();
             builder.RegisterType<CachePersist>().As<ICachePersist>().SingleInstance();
-
+            builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterType<CalendarHelper>().AsSelf().SingleInstance();
+            builder.RegisterType<DeviceNetworkStatus>().AsImplementedInterfaces();
+            builder.RegisterType<TokenGetService>().AsImplementedInterfaces();
             //builder.RegisterType<UserOperations>().SingleInstance();
             //builder.RegisterType<OutlookTokenGetService>().As<ITokenGetService>().SingleInstance();
             //builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();

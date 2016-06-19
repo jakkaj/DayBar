@@ -8,7 +8,8 @@
         >
     <Grid>
         <StackPanel>
-            <Button Content="Login" Click="ButtonBase_OnClick"></Button>
+            <Button Content="Login Normal" Click="ButtonBase_OnClick"></Button>
+            <Button Content="Login Force" Click="ButtonBase2_OnClick"></Button>
         </StackPanel>
        
     </Grid>

@@ -135,6 +135,7 @@
     <Compile Include="Glue\WPFModule.cs" />
     <Compile Include="Impl\TestCachePersist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Tests\AuthTests.cs" />
     <Compile Include="Tests\CalendarTests.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -149,6 +150,10 @@
     <ProjectReference Include="..\Daybar.Core\Daybar.Core.csproj">
       <Project>{B45057E9-F8EA-430A-AA0D-492319DDA5D1}</Project>
       <Name>Daybar.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\DayBar.Entity\DayBar.Entity.csproj">
+      <Project>{5cf307ff-bb33-4fb1-9553-047d12f51565}</Project>
+      <Name>DayBar.Entity</Name>
     </ProjectReference>
     <ProjectReference Include="..\Office365Api.Helpers\Office365Api.Helpers.csproj">
       <Project>{9B04C58C-B3DC-4690-A391-779F6D70E566}</Project>
