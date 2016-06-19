@@ -33,7 +33,7 @@ namespace DayBar.Tests.Impl
         string _cacheFile()
         {
             var ad = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);
-            var file = $"{ad}\\daybar\\cache.dat";
+            var file = @"C:\Users\jak\AppData\Local\daybar\cache.dat";
 
             return file;
         }

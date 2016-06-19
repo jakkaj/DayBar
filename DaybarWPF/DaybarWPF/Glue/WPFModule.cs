@@ -4,11 +4,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
-using DaybarWPF.Impl;
 using DayBar.Contract.Auth;
 using DayBar.Contract.Repo;
-using DayBar.UWP.Impl;
 using Office365Api.Helpers;
+using Office365Api.Helpers.Impl;
 
 //using DayBar.UWP.Office365;
 

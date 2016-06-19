@@ -44,6 +44,24 @@ namespace Office365Api.Helpers
             private set;
         }
 
+        public void EnsureAuthenticationContext(string authority)
+        {
+            if (this.AuthenticationContext == null)
+            {
+                var cache = _cachePersist.Read();
+
+                if (cache != null)
+                {
+                    var t = new TokenCache(cache);
+                    this.AuthenticationContext = new AuthenticationContext(authority, t);
+                }
+                else
+                {
+                    throw new Exception("Cache is empty, fire up main project and log in first. Check path in TestCachePersist");
+                }
+            }
+        }
+
         public async Task EnsureAuthenticationContext(String authority, object ownerWindow)
         {
             
