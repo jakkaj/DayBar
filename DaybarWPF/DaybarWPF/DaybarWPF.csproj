@@ -162,6 +162,12 @@
     <Compile Include="View\Control\BarItemView.xaml.cs">
       <DependentUpon>BarItemView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\NowView.model.cs">
+      <DependentUpon>NowView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\NowView.xaml.cs">
+      <DependentUpon>NowView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -182,6 +188,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\BarItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\NowView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

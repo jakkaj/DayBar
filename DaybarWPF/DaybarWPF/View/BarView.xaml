@@ -13,10 +13,32 @@
         Background="Transparent"
         ShowInTaskbar="False"
         AllowsTransparency="True">
-   
+    <Window.Resources>
+        <EasingDoubleKeyFrame x:Key="myEasingKey" KeyTime="0:0:2" Value="500">
+            <EasingDoubleKeyFrame.EasingFunction>
+                <CubicEase EasingMode="EaseOut"/>
+            </EasingDoubleKeyFrame.EasingFunction>
+        </EasingDoubleKeyFrame>
+        <Storyboard x:Key="LoadChaser" x:Name="LoadChaser" RepeatBehavior="Forever">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[3].(TranslateTransform.X)" Storyboard.TargetName="rectangle">
+                <StaticResource ResourceKey="myEasingKey" />
+                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="0">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
+    </Window.Resources>
+    <!--<Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource LoadChaser}"/>
+        </EventTrigger>
+    </Window.Triggers>-->
+
     <Grid>
-        
-        <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch" Background="Purple">
+
+        <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
                     <control:BarItemView/>
@@ -28,7 +50,19 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
-        
+        <control:NowView DataContext="{Binding NowViewModel}" VerticalAlignment="Stretch"></control:NowView>
+
+        <Rectangle x:Name="rectangle" Fill="BlueViolet" Height="3" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" >
+            <Rectangle.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform/>
+                </TransformGroup>
+            </Rectangle.RenderTransform>
+        </Rectangle>
+
         <!--<Rectangle Width="200" Fill="Red" Height="3" Margin="0" VerticalAlignment="Top"></Rectangle>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
             

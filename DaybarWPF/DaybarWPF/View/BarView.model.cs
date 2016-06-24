@@ -16,14 +16,24 @@ namespace DaybarWPF.View
         private readonly ICalendarService _calendarService;
         private readonly IUserService _userService;
         private readonly ILifetimeScope _scope;
+        private readonly IDeviceService _deviceService;
 
         private List<BarItemViewModel> items;
 
-        public BarViewModel(ICalendarService calendarService, IUserService userService, ILifetimeScope scope)
+        private NowViewModel _nowViewModel;
+
+        private bool _isLoading;
+
+        private double _width = 500;
+
+        public BarViewModel(ICalendarService calendarService, IUserService userService, ILifetimeScope scope, IDeviceService deviceService)
         {
             _calendarService = calendarService;
             _userService = userService;
             _scope = scope;
+            _deviceService = deviceService;
+            NowViewModel = scope.Resolve<NowViewModel>();
+            Width = deviceService.WindowWidth;
         }
 
         public void Init()
@@ -35,10 +45,12 @@ namespace DaybarWPF.View
 
         async void _refreshCalendar()
         {
+            IsLoading = true;
             var isLoggedIn = await _userService.EnsureLoggedIn(false);
 
             if (!isLoggedIn)
             {
+                IsLoading = false;
                 //TODO: Add logged out thingo
                 return;
             }
@@ -53,6 +65,7 @@ namespace DaybarWPF.View
             var wrapped = _wrap(events.Object);
 
             Items = wrapped;
+            IsLoading = false;
         }
 
         List<BarItemViewModel> _wrap(List<CalendarEntry> events)
@@ -80,5 +93,30 @@ namespace DaybarWPF.View
             }
         }
 
+        public NowViewModel NowViewModel
+        {
+            get { return _nowViewModel; }
+            set
+            {
+                _nowViewModel = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsLoading
+        {
+            get { return _isLoading; }
+            set
+            {
+                _isLoading = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public double Width
+        {
+            get { return _width; }
+            set { _width = value; }
+        }
     }
 }

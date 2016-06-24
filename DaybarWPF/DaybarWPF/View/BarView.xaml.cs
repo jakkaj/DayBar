@@ -10,6 +10,7 @@ using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using Autofac;
@@ -35,6 +36,33 @@ namespace DaybarWPF.View
             _deviceService = deviceService;
             this.DataContext = vm;
 
+            vm.PropertyChanged += Vm_PropertyChanged;
+
+        }
+
+        private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == "IsLoading")
+            {
+                _loadCheck();
+            }
+        }
+
+        void _loadCheck()
+        {
+            var sb = this.Resources["LoadChaser"] as Storyboard;
+
+            if (_vm.IsLoading)
+            {
+                sb.BeginTime = TimeSpan.Zero;
+                rectangle.Visibility = Visibility.Visible;
+                sb.Begin();
+            }
+            else
+            {
+                sb.Stop();
+                rectangle.Visibility = Visibility.Collapsed;
+            }
         }
 
         private void BarView_Activated(object sender, EventArgs e)
@@ -65,7 +93,7 @@ namespace DaybarWPF.View
                 this.Height = 3;
                 this.Width = pHeight.X;
 
-                
+                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width;
                 _deviceService.WindowWidth = this.Width;
                 _vm.Init();
 
