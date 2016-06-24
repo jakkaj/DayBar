@@ -11,6 +11,7 @@ using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Interop;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -61,7 +62,8 @@ namespace DaybarWPF
 
         async void _showLogin(bool force)
         {
-
+            var sb = this.Resources["CalendarPop"] as Storyboard;
+            sb.Begin();
             var authResult = await _userService.EnsureLoggedIn(force);
 
             if (!authResult)
@@ -72,10 +74,30 @@ namespace DaybarWPF
             else
             {
                 Debug.WriteLine("Logged in");
+                _showBar();
                 //load the system.
             }
+            sb.Pause();
+            sb.BeginTime = TimeSpan.Zero;
         }
 
+        async void _showBar()
+        {
+            await Task.Delay(1000);
+            var sb = this.Resources["Fader"] as Storyboard;
+            sb.Begin();
+
+            sb.Completed += Sb_Completed;
+
+            var barWindow = new BarView();
+
+            barWindow.Show();
+        }
+
+        private void Sb_Completed(object sender, EventArgs e)
+        {
+            this.Visibility = Visibility.Collapsed;
+        }
 
         private void ButtonBase_OnClick(object sender, RoutedEventArgs e)
         {

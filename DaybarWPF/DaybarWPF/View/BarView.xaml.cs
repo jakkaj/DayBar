@@ -7,6 +7,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Documents;
+using System.Windows.Forms;
 using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
@@ -34,20 +35,43 @@ namespace DaybarWPF.View
 
         void _position()
         {
-            var tb = WindowsTaskbar.TaskbarPostion;
-            this.Left = 0;
-            this.Top = 0;
-            this.Width = 0;
-            this.Height = 0;
+            foreach (Screen s in Screen.AllScreens)
+            {
+                if (!s.Primary)
+                {
+                    continue;
+                }
 
-            var pLeft = this.PointFromScreen(new Point(tb.Left, tb.Top));
-            var pHeight = this.PointFromScreen(new Point(tb.Width, tb.Height));
+                var tb = s.Bounds;
+                this.Left = 0;
+                this.Top = 0;
+                this.Width = 0;
+                this.Height = 0;
 
-            this.Left = pLeft.X;
-            this.Top = pLeft.Y - 5;
-            this.Height = 2;
-            this.Width = pHeight.X;
-            var t = tb;
+                var pLeft = this.PointFromScreen(new Point(tb.Left, tb.Top));
+                var pHeight = this.PointFromScreen(new Point(tb.Width, tb.Height));
+                
+                this.Left = 0;
+                this.Top = 0;
+                this.Height = 3;
+                this.Width = pHeight.X;
+
+            }
+
+            //var tb = WindowsTaskbar.TaskbarPostion;
+            //this.Left = 0;
+            //this.Top = 0;
+            //this.Width = 0;
+            //this.Height = 0;
+
+            //var pLeft = this.PointFromScreen(new Point(tb.Left, tb.Top));
+            //var pHeight = this.PointFromScreen(new Point(tb.Width, tb.Height));
+
+            //this.Left = pLeft.X;
+            //this.Top = pLeft.Y - 5;
+            //this.Height = 2;
+            //this.Width = pHeight.X;
+            //var t = tb;
         }
     }
 }
