@@ -6,6 +6,14 @@
              xmlns:local="clr-namespace:DaybarWPF.View.Control"
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
+    <UserControl.Resources>
+        <Storyboard x:Key="NowFader"/>
+    </UserControl.Resources>
+    <UserControl.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource NowFader}"/>
+        </EventTrigger>
+    </UserControl.Triggers>
     <Canvas>
         <Ellipse Fill="YellowGreen" Width="12" Height="12" Margin="0, -6" Canvas.Left="{Binding Offset}"></Ellipse>   
     </Canvas>

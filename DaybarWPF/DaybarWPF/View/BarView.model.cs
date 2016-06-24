@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
+using System.Windows.Threading;
 using Autofac;
 using DaybarWPF.View.Control;
 using DayBar.Contract.Service;
@@ -34,6 +36,17 @@ namespace DaybarWPF.View
             _deviceService = deviceService;
             NowViewModel = scope.Resolve<NowViewModel>();
             Width = deviceService.WindowWidth;
+
+
+            var t = new Timer();
+            t.Interval = 60000;
+            t.Elapsed += T_Elapsed;
+            t.Start();
+        }
+
+        private async void T_Elapsed(object sender, ElapsedEventArgs e)
+        {
+            _refreshCalendar();
         }
 
         public void Init()
@@ -43,29 +56,40 @@ namespace DaybarWPF.View
         }
 
 
-        async void _refreshCalendar()
+        void _refreshCalendar()
         {
-            IsLoading = true;
-            var isLoggedIn = await _userService.EnsureLoggedIn(false);
-
-            if (!isLoggedIn)
+            MyDispatcher.Invoke(async () =>
             {
+                if (Items == null || Items?.Count == 0)
+                {
+                    IsLoading = true;
+                }
+                
+                Items?.Clear();
+
+                var isLoggedIn = await _userService.EnsureLoggedIn(false);
+
+                if (!isLoggedIn)
+                {
+                    IsLoading = false;
+                    //TODO: Add logged out thingo
+                    return;
+                }
+
+                var events = await _calendarService.GetToday();
+
+                if (!events)
+                {
+                    //TODO Error getting events. 
+                    return;
+                }
+                var wrapped = _wrap(events.Object);
+
+                Items = wrapped;
                 IsLoading = false;
-                //TODO: Add logged out thingo
-                return;
-            }
-
-            var events = await _calendarService.GetToday();
-
-            if (!events)
-            {
-                //TODO Error getting events. 
-                return;
-            }
-            var wrapped = _wrap(events.Object);
-
-            Items = wrapped;
-            IsLoading = false;
+            });
+            
+            
         }
 
         List<BarItemViewModel> _wrap(List<CalendarEntry> events)
@@ -118,5 +142,7 @@ namespace DaybarWPF.View
             get { return _width; }
             set { _width = value; }
         }
+
+        public Dispatcher MyDispatcher { get; set; }
     }
 }

@@ -13,6 +13,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using System.Windows.Threading;
 using Autofac;
 using DaybarWPF.Util;
 using DayBar.Contract.Service;
@@ -26,7 +27,7 @@ namespace DaybarWPF.View
     {
         private BarViewModel _vm;
         private readonly IDeviceService _deviceService;
-
+      
         public BarView(BarViewModel vm, IDeviceService deviceService)
         {
             InitializeComponent();
@@ -35,9 +36,9 @@ namespace DaybarWPF.View
             this._vm = vm;
             _deviceService = deviceService;
             this.DataContext = vm;
-
+            vm.MyDispatcher = Dispatcher.CurrentDispatcher;
             vm.PropertyChanged += Vm_PropertyChanged;
-
+          
         }
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -50,8 +51,13 @@ namespace DaybarWPF.View
 
         void _loadCheck()
         {
-            var sb = this.Resources["LoadChaser"] as Storyboard;
+            Dispatcher.CurrentDispatcher.BeginInvoke(DispatcherPriority.Normal, new Action(_doLoad));
+        }
 
+        void _doLoad()
+        {
+            var sb = this.Resources["LoadChaser"] as Storyboard;
+           
             if (_vm.IsLoading)
             {
                 sb.BeginTime = TimeSpan.Zero;
