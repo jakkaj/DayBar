@@ -86,5 +86,10 @@ namespace DaybarWPF
         {
             _showLogin(true);
         }
+
+        private void CloseButton_OnClick(object sender, RoutedEventArgs e)
+        {
+            Application.Current.Shutdown();
+        }
     }
 }
