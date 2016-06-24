@@ -136,6 +136,7 @@
     <Compile Include="Impl\TestCachePersist.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Tests\AuthTests.cs" />
+    <Compile Include="Tests\CalcTests.cs" />
     <Compile Include="Tests\CalendarTests.cs" />
   </ItemGroup>
   <ItemGroup>

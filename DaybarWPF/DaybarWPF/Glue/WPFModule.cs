@@ -17,7 +17,11 @@ namespace DaybarWPF.Glue
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AuthenticationHelper>().AsImplementedInterfaces().SingleInstance();
+            builder.RegisterAssemblyTypes(typeof(WPFModule).Assembly)
+              .Where(t => t.Name.EndsWith("View") || t.Name.EndsWith("ViewModel"))
+              .AsSelf();
+
+            builder.RegisterType<AuthenticationHelper>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CachePersist>().As<ICachePersist>().SingleInstance();
             builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CalendarHelper>().AsSelf().SingleInstance();

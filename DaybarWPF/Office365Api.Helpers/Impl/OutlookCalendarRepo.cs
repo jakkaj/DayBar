@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using Autofac;
+using DayBar.Contract.Office;
 using DayBar.Contract.Repo;
 using DayBar.Entity.Calendars;
 using XamlingCore.Portable.Contract.Downloaders;
@@ -15,11 +16,11 @@ namespace Office365Api.Helpers.Impl
 {
     public class OutlookCalendarRepo : OperationWebRepo<CalendarEntry>, ICalendarRepo
     {
-        private readonly AuthenticationHelper _authenticationHelper;
+        private readonly IAuthenticationHelper _authenticationHelper;
         private readonly CalendarHelper _calendarHelper;
         private readonly IEntitySerialiser _entitySerialiser;
 
-        public OutlookCalendarRepo(AuthenticationHelper authenticationHelper, CalendarHelper calendarHelper, IHttpTransferrer downloader, IEntitySerialiser entitySerialiser)
+        public OutlookCalendarRepo(IAuthenticationHelper authenticationHelper, CalendarHelper calendarHelper, IHttpTransferrer downloader, IEntitySerialiser entitySerialiser)
             : base(downloader, entitySerialiser, "")
         {
             _authenticationHelper = authenticationHelper;

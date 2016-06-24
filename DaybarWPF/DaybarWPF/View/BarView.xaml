@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:DaybarWPF.View"
+        xmlns:control="clr-namespace:DaybarWPF.View.Control"
         mc:Ignorable="d"
         
         
@@ -12,42 +13,23 @@
         Background="Transparent"
         ShowInTaskbar="False"
         AllowsTransparency="True">
-    <Window.Resources>
-
-
-        <Storyboard x:Key="Blip" AutoReverse="True" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.Opacity)" Storyboard.TargetName="rectangle">
-                <EasingDoubleKeyFrame KeyTime="0" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:1" Value="0"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:2" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-        <Storyboard x:Key="Alert" RepeatBehavior="Forever">
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="rectangle1">
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="1"/>
-            </DoubleAnimationUsingKeyFrames>
-            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="rectangle1">
-                <EasingDoubleKeyFrame KeyTime="0:0:4" Value="1"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:5" Value="3"/>
-                <EasingDoubleKeyFrame KeyTime="0:0:6" Value="1">
-                    <EasingDoubleKeyFrame.EasingFunction>
-                        <BounceEase EasingMode="EaseOut"/>
-                    </EasingDoubleKeyFrame.EasingFunction>
-                </EasingDoubleKeyFrame>
-            </DoubleAnimationUsingKeyFrames>
-        </Storyboard>
-
-
-    </Window.Resources>
-    <Window.Triggers>
-        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
-            <BeginStoryboard Storyboard="{StaticResource Blip}"/>
-            <BeginStoryboard Storyboard="{StaticResource Alert}"/>
-        </EventTrigger>
-    </Window.Triggers>
+   
     <Grid>
-        <Rectangle Width="200" Fill="Red" Height="3" Margin="0" VerticalAlignment="Top"></Rectangle>
+        
+        <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch" Background="Purple">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <control:BarItemView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas></Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+        
+        <!--<Rectangle Width="200" Fill="Red" Height="3" Margin="0" VerticalAlignment="Top"></Rectangle>
         <StackPanel Orientation="Horizontal" Margin="0,0,0,0" >
             
             <Rectangle Width="200" Fill="Black" Height="3"></Rectangle>
@@ -70,6 +52,6 @@
             <Rectangle Width="30" Fill="Red" Height="3"></Rectangle>
             <Rectangle Width="200" Fill="Black" Height="3"></Rectangle>
             <Rectangle Width="100" Fill="Orange" Height="3"></Rectangle>
-        </StackPanel>
+        </StackPanel>-->
     </Grid>
 </Window>

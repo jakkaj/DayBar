@@ -40,6 +40,7 @@
     <Compile Include="Model\Config\TransferConfigService.cs" />
     <Compile Include="Model\Constants.cs" />
     <Compile Include="Model\Messages\TokenExpiredMessage.cs" />
+    <Compile Include="Model\Services\BarConfigService.cs" />
     <Compile Include="Model\Services\CalendarService.cs" />
     <Compile Include="Model\Services\DeviceService.cs" />
     <Compile Include="Model\Services\UserService.cs" />

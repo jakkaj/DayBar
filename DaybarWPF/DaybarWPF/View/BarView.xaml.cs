@@ -12,7 +12,9 @@ using System.Windows.Input;
 using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using Autofac;
 using DaybarWPF.Util;
+using DayBar.Contract.Service;
 
 namespace DaybarWPF.View
 {
@@ -21,11 +23,18 @@ namespace DaybarWPF.View
     /// </summary>
     public partial class BarView : Window
     {
-        public BarView()
+        private BarViewModel _vm;
+        private readonly IDeviceService _deviceService;
+
+        public BarView(BarViewModel vm, IDeviceService deviceService)
         {
             InitializeComponent();
 
             this.Activated += BarView_Activated;
+            this._vm = vm;
+            _deviceService = deviceService;
+            this.DataContext = vm;
+
         }
 
         private void BarView_Activated(object sender, EventArgs e)
@@ -55,6 +64,10 @@ namespace DaybarWPF.View
                 this.Top = 0;
                 this.Height = 3;
                 this.Width = pHeight.X;
+
+                
+                _deviceService.WindowWidth = this.Width;
+                _vm.Init();
 
             }
 

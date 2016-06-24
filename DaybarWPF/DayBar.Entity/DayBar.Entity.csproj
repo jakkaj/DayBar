@@ -36,6 +36,7 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Calendars\CalandarConfig.cs" />
     <Compile Include="Calendars\CalendarEntry.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Strip\StripElement.cs" />

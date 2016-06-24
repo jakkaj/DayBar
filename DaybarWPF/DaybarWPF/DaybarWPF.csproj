@@ -152,8 +152,15 @@
     <Compile Include="Glue\ProjectGlue.cs" />
     <Compile Include="Glue\WPFModule.cs" />
     <Compile Include="Util\TaskBarUtils.cs" />
+    <Compile Include="View\BarView.model.cs">
+      <DependentUpon>BarView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\BarView.xaml.cs">
       <DependentUpon>BarView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\BarItemView.model.cs" />
+    <Compile Include="View\Control\BarItemView.xaml.cs">
+      <DependentUpon>BarItemView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
@@ -171,6 +178,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="View\BarView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\BarItemView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

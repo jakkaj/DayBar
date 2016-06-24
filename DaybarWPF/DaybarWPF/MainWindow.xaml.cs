@@ -89,7 +89,7 @@ namespace DaybarWPF
 
             sb.Completed += Sb_Completed;
 
-            var barWindow = new BarView();
+            var barWindow = _container.Resolve<BarView>();
 
             barWindow.Show();
         }
