@@ -148,7 +148,6 @@
     <Compile Include="Impl\OutlookCalendarResultEntitye.cs" />
     <Compile Include="Impl\OutlookTokenGetService.cs" />
     <Compile Include="Office365\MailHelper.cs" />
-    <Compile Include="Office365\MyFilesHelper.cs" />
     <Compile Include="Office365\Office365Capabilities.cs" />
     <Compile Include="Office365\Office365ServicesUris.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -11,7 +11,7 @@ namespace DayBar.Tests.Glue
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterType<AuthenticationHelper>().AsSelf().SingleInstance();
+            builder.RegisterType<AuthenticationHelper>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CachePersist>().As<ICachePersist>().SingleInstance();
             builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();
             builder.RegisterType<CalendarHelper>().AsSelf().SingleInstance();

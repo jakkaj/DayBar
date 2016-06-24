@@ -28,6 +28,8 @@ namespace DayBar.Tests.Tests
             var events = await calService.GetToday();
 
             Assert.IsNotNull(events);
+
+            Debug.WriteLine($"{events.Object.Count()} events found");
         }
 
         [TestMethod]

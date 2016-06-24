@@ -10,18 +10,22 @@ using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using DayBar.Contract.Office;
 using DayBar.Contract.Repo;
+using DayBar.Contract.Service;
 using Microsoft.Office365.SharePoint.FileServices;
 
 namespace Office365Api.Helpers
 {
-    public class AuthenticationHelper
+    public class AuthenticationHelper : IAuthenticationHelper
     {
         private readonly ICachePersist _cachePersist;
+        private readonly IDeviceService _deviceService;
 
-        public AuthenticationHelper(ICachePersist cachePersist)
+        public AuthenticationHelper(ICachePersist cachePersist, IDeviceService deviceService)
         {
             _cachePersist = cachePersist;
+            _deviceService = deviceService;
         }
 
 
@@ -62,10 +66,8 @@ namespace Office365Api.Helpers
             }
         }
 
-        public async Task EnsureAuthenticationContext(String authority, object ownerWindow, bool force)
+        public async Task<bool> EnsureAuthenticationContext(string authority, bool show)
         {
-            
-
             if (this.AuthenticationContext == null)
             {
                 var cache = _cachePersist.Read();
@@ -79,18 +81,9 @@ namespace Office365Api.Helpers
                 {
                     this.AuthenticationContext = new AuthenticationContext(authority);
                 }
-                
-
-                //var tokenCacheItem = AuthenticationContext.TokenCache.ReadItems().FirstOrDefault();
-
-                //if (tokenCacheItem != null)
-                //{
-                //    this.AuthenticationContext = new AuthenticationContext(tokenCacheItem.Authority);
-                //}
             }
-            //this.AuthenticationContext
-            //var assertion = new ClientAssertion();
-            var p = new PlatformParameters(force ? PromptBehavior.Always : PromptBehavior.Auto, ownerWindow);
+           
+            var p = new PlatformParameters(show ? PromptBehavior.Always : PromptBehavior.Never, _deviceService.WindowHandle);
             this.AuthenticationResult =
                 await this.AuthenticationContext.AcquireTokenAsync(
                     Office365ServicesUris.AADGraphAPIResourceId,
@@ -101,21 +94,23 @@ namespace Office365Api.Helpers
             var tokenCache = AuthenticationContext.TokenCache.Serialize();
             
             _cachePersist.Write(tokenCache);
+
+            return !string.IsNullOrWhiteSpace(this.AuthenticationResult.AccessToken);
         }
 
-        public void EnsureAuthenticationContext(TokenCache tokenCache)
-        {
-            if (ClaimsPrincipal.Current != null)
-            {
-                var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
-                var userObjectId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
-                var tenantId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
+        //public void EnsureAuthenticationContext(TokenCache tokenCache)
+        //{
+        //    if (ClaimsPrincipal.Current != null)
+        //    {
+        //        var signInUserId = ClaimsPrincipal.Current.FindFirst(ClaimTypes.NameIdentifier).Value;
+        //        var userObjectId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/objectidentifier").Value;
+        //        var tenantId = ClaimsPrincipal.Current.FindFirst("http://schemas.microsoft.com/identity/claims/tenantid").Value;
 
-                this.AuthenticationContext = new AuthenticationContext(
-                    String.Format("{0}/{1}", AuthenticationHelper.AuthorizationUri, tenantId),
-                    tokenCache);
-            }
-        }
+        //        this.AuthenticationContext = new AuthenticationContext(
+        //            String.Format("{0}/{1}", AuthenticationHelper.AuthorizationUri, tenantId),
+        //            tokenCache);
+        //    }
+        //}
 
         public async Task<String> GetAccessTokenForServiceAsync(String serviceResourceId)
         {
@@ -185,31 +180,6 @@ namespace Office365Api.Helpers
                 var dcr = await discoveryClient.DiscoverCapabilityAsync(Office365Capabilities.Calendar.ToString());
 
                 return await GetAccessTokenForServiceAsync(dcr.ServiceResourceId);
-            }
-            catch (AdalException exception)
-            {
-                // Handle token acquisition failure
-                if (exception.ErrorCode == AdalError.FailedToAcquireTokenSilently)
-                {
-                    this.AuthenticationContext.TokenCache.Clear();
-                    throw exception;
-                }
-                return null;
-            }
-        }
-
-        public async Task<SharePointClient> EnsureSharePointClientCreatedAsync(string capabilityName)
-        {
-            try
-            {
-                DiscoveryClient discoveryClient = new DiscoveryClient(
-                    Office365ServicesUris.DiscoveryServiceEndpointUri,
-                    async () => { return await GetAccessTokenForServiceAsync(Office365ServicesUris.DiscoveryServiceResourceId); });
-
-                var dcr = await discoveryClient.DiscoverCapabilityAsync(capabilityName);
-
-                return new SharePointClient(dcr.ServiceEndpointUri,
-                    async () => { return await GetAccessTokenForServiceAsync(dcr.ServiceResourceId); });
             }
             catch (AdalException exception)
             {

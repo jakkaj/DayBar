@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -16,6 +17,8 @@ using System.Windows.Shapes;
 using Autofac;
 using DaybarWPF.Util;
 using DaybarWPF.View;
+using DayBar.Contract.Office;
+using DayBar.Contract.Service;
 using Office365Api.Helpers;
 using XamlingCore.Portable.Data.Glue;
 
@@ -26,43 +29,51 @@ namespace DaybarWPF
     /// </summary>
     public partial class MainWindow : Window
     {
+        private ILifetimeScope _container;
+        private IDeviceService _deviceService;
+
+        private IUserService _userService;
         public MainWindow()
         {
             InitializeComponent();
-            this.Activated += MainWindow_Activated;
-            _top();
+     
+            this.Loaded += MainWindow_Loaded;
+            _container = ContainerHost.Container;
+            _deviceService = _container.Resolve<IDeviceService>();
+            _userService = _container.Resolve<IUserService>();
+
+            
         }
 
-        async void _top()
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //while (true)
-            //{
-            //    await Task.Delay(500);
-            //    this.Topmost = true;
-            //}
+            _init();
         }
 
-
-
-        private void MainWindow_Activated(object sender, EventArgs e)
+        async void _init()
         {
-            //_showLogin();
+            _deviceService.SetWindowHandle(new WindowInteropHelper(Application.Current.MainWindow).Handle);
+            await Task.Delay(1000);
+            _showLogin(false);
         }
+
+      
 
         async void _showLogin(bool force)
         {
-            await Task.Delay(1000);
-            IntPtr windowHandle = new WindowInteropHelper(Application.Current.MainWindow).Handle;
 
-            var authenticationHelper = ContainerHost.Container.Resolve<AuthenticationHelper>();
+            var authResult = await _userService.EnsureLoggedIn(force);
 
-            
-            await authenticationHelper.EnsureAuthenticationContext("https://login.windows.net/Common/", windowHandle, force);
-
-            var c = new CalendarHelper(authenticationHelper);
-
-            var events = await c.GetCalendarEvents();
-            var t = events;
+            if (!authResult)
+            {
+                Debug.WriteLine("Not logged in");
+                //show login options
+            }
+            else
+            {
+                Debug.WriteLine("Logged in");
+                //load the system.
+            }
         }
 
 
