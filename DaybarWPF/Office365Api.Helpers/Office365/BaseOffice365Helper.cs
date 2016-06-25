@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Office365Api.Helpers
+﻿namespace Office365Api.Helpers.Office365
 {
     public abstract class BaseOffice365Helper
     {

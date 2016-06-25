@@ -151,7 +151,9 @@
     </ApplicationDefinition>
     <Compile Include="Glue\ProjectGlue.cs" />
     <Compile Include="Glue\WPFModule.cs" />
+    <Compile Include="Model\Messages\LogoutAndShowMainMessage.cs" />
     <Compile Include="Util\TaskBarUtils.cs" />
+    <Compile Include="Util\UIUtils.cs" />
     <Compile Include="View\BarView.model.cs">
       <DependentUpon>BarView.xaml</DependentUpon>
     </Compile>
@@ -231,9 +233,7 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Model\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

@@ -1,13 +1,10 @@
-﻿using Microsoft.Office365.SharePoint;
+﻿using System;
+using System.Collections.Generic;
+using System.Threading.Tasks;
 using Microsoft.Office365.SharePoint.CoreServices;
 using Microsoft.Office365.SharePoint.FileServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
-namespace Office365Api.Helpers
+namespace Office365Api.Helpers.Office365
 {
     public class  SitesHelper : BaseOffice365Helper
     {

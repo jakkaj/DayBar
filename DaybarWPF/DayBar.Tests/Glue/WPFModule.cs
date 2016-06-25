@@ -2,6 +2,7 @@
 using DayBar.Contract.Repo;
 using Office365Api.Helpers;
 using Office365Api.Helpers.Impl;
+using Office365Api.Helpers.Office365;
 
 //using DayBar.UWP.Office365;
 

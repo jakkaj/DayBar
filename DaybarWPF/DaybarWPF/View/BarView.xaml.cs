@@ -15,8 +15,11 @@ using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using System.Windows.Threading;
 using Autofac;
+using DaybarWPF.Model.Messages;
 using DaybarWPF.Util;
 using DayBar.Contract.Service;
+using DayBar.Contract.UI;
+using XamlingCore.Portable.Messages.XamlingMessenger;
 
 namespace DaybarWPF.View
 {
@@ -27,18 +30,35 @@ namespace DaybarWPF.View
     {
         private BarViewModel _vm;
         private readonly IDeviceService _deviceService;
-      
-        public BarView(BarViewModel vm, IDeviceService deviceService)
+        private readonly IUIUtils _uiUtils;
+
+        public BarView(BarViewModel vm, 
+            IDeviceService deviceService, IUIUtils uiUtils)
         {
             InitializeComponent();
 
             this.Activated += BarView_Activated;
             this._vm = vm;
             _deviceService = deviceService;
+            _uiUtils = uiUtils;
             this.DataContext = vm;
             vm.MyDispatcher = Dispatcher.CurrentDispatcher;
             vm.PropertyChanged += Vm_PropertyChanged;
+
+            this.MouseDoubleClick += BarView_MouseDoubleClick;
           
+        }
+
+        void _logoutAndShowMain()
+        {
+            _uiUtils.LogoutAndShowHome();
+            this.Close();
+
+        }
+
+        private void BarView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
+        {
+            _logoutAndShowMain();
         }
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)

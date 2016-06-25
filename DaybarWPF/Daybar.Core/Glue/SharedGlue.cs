@@ -1,9 +1,7 @@
 ﻿using System.Reflection;
 using Autofac;
 using Daybar.Core.Model.Config;
-using Daybar.Core.Model.Services.Calendar;
-
-
+using Daybar.Core.Model.Services;
 using XamlingCore.Portable.Contract.Downloaders;
 
 namespace Daybar.Core.Glue

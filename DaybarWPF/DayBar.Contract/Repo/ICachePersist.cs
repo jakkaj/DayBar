@@ -4,5 +4,6 @@ namespace DayBar.Contract.Repo
     {
         void Write(byte[] cache);
         byte[] Read();
+        void Clear();
     }
 }

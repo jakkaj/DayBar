@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DayBar.Contract.Auth;
+using Office365Api.Helpers.Office365;
 
 namespace Office365Api.Helpers.Impl
 {

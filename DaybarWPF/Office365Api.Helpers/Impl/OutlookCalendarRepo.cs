@@ -6,6 +6,7 @@ using Autofac;
 using DayBar.Contract.Office;
 using DayBar.Contract.Repo;
 using DayBar.Entity.Calendars;
+using Office365Api.Helpers.Office365;
 using XamlingCore.Portable.Contract.Downloaders;
 using XamlingCore.Portable.Contract.Serialise;
 using XamlingCore.Portable.Data.Glue;

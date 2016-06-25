@@ -1,12 +1,9 @@
-﻿using Microsoft.Azure.ActiveDirectory.GraphClient;
-using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
+using Microsoft.Azure.ActiveDirectory.GraphClient;
 
-namespace Office365Api.Helpers
+namespace Office365Api.Helpers.Office365
 {
     public class ActiveDirectoryHelper : BaseOffice365Helper
     {

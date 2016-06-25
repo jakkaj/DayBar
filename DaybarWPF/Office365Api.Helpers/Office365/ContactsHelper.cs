@@ -1,11 +1,8 @@
-﻿using Microsoft.Office365.OutlookServices;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.Office365.OutlookServices;
 
-namespace Office365Api.Helpers
+namespace Office365Api.Helpers.Office365
 {
     public class ContactsHelper : BaseOffice365Helper
     {

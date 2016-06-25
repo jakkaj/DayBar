@@ -9,6 +9,7 @@ using DayBar.Contract.Service;
 using DayBar.Tests.Glue;
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Office365Api.Helpers;
+using Office365Api.Helpers.Office365;
 using XamlingCore.Portable.Data.Glue;
 
 namespace DayBar.Tests.Tests

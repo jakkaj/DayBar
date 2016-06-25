@@ -1,14 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
+﻿using System.Collections.Generic;
 using System.Threading.Tasks;
 using DayBar.Contract.Repo;
 using DayBar.Contract.Service;
 using DayBar.Entity.Calendars;
 using XamlingCore.Portable.Model.Response;
 
-namespace Daybar.Core.Model.Services.Calendar
+namespace Daybar.Core.Model.Services
 {
     public class CalendarService : ICalendarService
     {

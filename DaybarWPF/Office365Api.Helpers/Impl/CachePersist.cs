@@ -6,6 +6,17 @@ namespace Office365Api.Helpers.Impl
 {
     public class CachePersist : ICachePersist
     {
+        public void Clear()
+        {
+            var f = new FileInfo(_cacheFile());
+
+            if (!f.Exists)
+            {
+                return;
+            }
+
+            f.Delete();
+        }
         public void Write(byte[] cache)
         {
             var f = new FileInfo(_cacheFile());

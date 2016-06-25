@@ -16,12 +16,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Autofac;
+using DaybarWPF.Model.Messages;
 using DaybarWPF.Util;
 using DaybarWPF.View;
 using DayBar.Contract.Office;
 using DayBar.Contract.Service;
 using Office365Api.Helpers;
 using XamlingCore.Portable.Data.Glue;
+using XamlingCore.Portable.Messages.XamlingMessenger;
 
 namespace DaybarWPF
 {
@@ -42,7 +44,7 @@ namespace DaybarWPF
             _container = ContainerHost.Container;
             _deviceService = _container.Resolve<IDeviceService>();
             _userService = _container.Resolve<IUserService>();
-
+            this.Register<LogoutAndShowMainMessage>(_reshowThis);
             
         }
 
@@ -64,21 +66,47 @@ namespace DaybarWPF
         {
             var sb = this.Resources["CalendarPop"] as Storyboard;
             sb.Begin();
-            var authResult = await _userService.EnsureLoggedIn(force);
+            try
+            {
+                var authResult = await _userService.EnsureLoggedIn(force);
 
-            if (!authResult)
-            {
-                Debug.WriteLine("Not logged in");
-                //show login options
+                if (!authResult)
+                {
+                    Debug.WriteLine("Not logged in");
+                    _showLogin();
+                    //show login options
+                }
+                else
+                {
+                    Debug.WriteLine("Logged in");
+                    _showBar();
+                    //load the system.
+                }
+                sb.Pause();
+                sb.BeginTime = TimeSpan.Zero;
             }
-            else
+            catch
             {
-                Debug.WriteLine("Logged in");
-                _showBar();
-                //load the system.
+                _showLogin();
             }
-            sb.Pause();
-            sb.BeginTime = TimeSpan.Zero;
+            
+        }
+
+        void _reshowThis()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                this.Visibility = Visibility.Visible;
+                this.Activate();
+                var sb = this.Resources["UnFader"] as Storyboard;
+                sb.Begin();
+                
+            });
+
+        }
+        void _showLogin()
+        {
+            LoginButton.Visibility= Visibility.Visible;
         }
 
         async void _showBar()

@@ -4,10 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Autofac;
+using DaybarWPF.Util;
 using DayBar.Contract.Auth;
 using DayBar.Contract.Repo;
+using DayBar.Contract.UI;
 using Office365Api.Helpers;
 using Office365Api.Helpers.Impl;
+using Office365Api.Helpers.Office365;
 
 //using DayBar.UWP.Office365;
 
@@ -21,6 +24,7 @@ namespace DaybarWPF.Glue
               .Where(t => t.Name.EndsWith("View") || t.Name.EndsWith("ViewModel"))
               .AsSelf();
 
+            builder.RegisterType<UIUtils>().As<IUIUtils>();
             builder.RegisterType<AuthenticationHelper>().AsImplementedInterfaces().AsSelf().SingleInstance();
             builder.RegisterType<CachePersist>().As<ICachePersist>().SingleInstance();
             builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();

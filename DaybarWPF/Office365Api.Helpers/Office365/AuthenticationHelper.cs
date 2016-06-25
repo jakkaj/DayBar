@@ -1,21 +1,15 @@
-﻿using Microsoft.IdentityModel.Clients.ActiveDirectory;
-using Microsoft.Office365.Discovery;
-using Microsoft.Office365.OutlookServices;
-using Microsoft.Office365.SharePoint.CoreServices;
-using System;
-using System.Collections.Generic;
+﻿using System;
 using System.Configuration;
-using System.Diagnostics;
-using System.Linq;
 using System.Security.Claims;
-using System.Text;
 using System.Threading.Tasks;
 using DayBar.Contract.Office;
 using DayBar.Contract.Repo;
 using DayBar.Contract.Service;
-using Microsoft.Office365.SharePoint.FileServices;
+using Microsoft.IdentityModel.Clients.ActiveDirectory;
+using Microsoft.Office365.Discovery;
+using Microsoft.Office365.OutlookServices;
 
-namespace Office365Api.Helpers
+namespace Office365Api.Helpers.Office365
 {
     public class AuthenticationHelper : IAuthenticationHelper
     {

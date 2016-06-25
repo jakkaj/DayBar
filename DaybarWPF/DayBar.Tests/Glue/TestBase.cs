@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Autofac;
 using Autofac.Core;
 using Office365Api.Helpers;
+using Office365Api.Helpers.Office365;
 using XamlingCore.Portable.Data.Glue;
 
 namespace DayBar.Tests.Glue
