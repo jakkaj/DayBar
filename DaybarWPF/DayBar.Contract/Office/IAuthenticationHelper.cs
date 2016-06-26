@@ -9,5 +9,6 @@ namespace DayBar.Contract.Office
        
        
         Task<string> GetOutlookToken();
+        Task Clear();
     }
 }

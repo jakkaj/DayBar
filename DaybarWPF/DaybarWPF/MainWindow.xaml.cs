@@ -104,7 +104,8 @@ namespace DaybarWPF
                 this.Activate();
                 var sb = this.Resources["UnFader"] as Storyboard;
                 sb.Begin();
-                
+                _showLogin();
+
             });
 
         }

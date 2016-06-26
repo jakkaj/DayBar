@@ -48,7 +48,7 @@ namespace DaybarWPF.View.Control
 
             var now = DateTime.Now;
 
-            var inMin = now.Subtract(_entry.Start);
+            var inMin = _entry.Start.Subtract(now);
             var endInMin = now.Subtract(_entry.End);
 
             var lengthMins = _entry.End.Subtract(_entry.Start);

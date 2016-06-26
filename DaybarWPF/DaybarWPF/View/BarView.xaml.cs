@@ -51,11 +51,17 @@ namespace DaybarWPF.View
             vm.PropertyChanged += Vm_PropertyChanged;
 
             this.MouseDoubleClick += BarView_MouseDoubleClick;
+            this.MouseRightButtonUp += BarView_MouseRightButtonUp;
             this.MouseUp += BarView_MouseUp;
             this.Closed += BarView_Closed;
             this.Loaded += BarView_Loaded;
             this.MouseEnter += BarView_MouseEnter;
             this.MouseLeave += BarView_MouseLeave;
+        }
+
+        private void BarView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _logoutAndShowMain();
         }
 
         private void BarView_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
@@ -85,7 +91,7 @@ namespace DaybarWPF.View
 
         private void BarView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _vm.RefreshCalendar(true);
+            
         }
 
         void _logoutAndShowMain()
@@ -97,7 +103,7 @@ namespace DaybarWPF.View
 
         private void BarView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _logoutAndShowMain();
+            _vm.RefreshCalendar(true);
         }
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -156,7 +162,7 @@ namespace DaybarWPF.View
                 
                 this.Left = 0;
                 this.Top = 0;
-                this.Height = 3;
+                this.Height = 15;
                 this.Width = pHeight.X;
 
                 ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width;

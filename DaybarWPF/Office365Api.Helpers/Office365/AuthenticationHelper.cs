@@ -7,6 +7,7 @@ using DayBar.Contract.Repo;
 using DayBar.Contract.Service;
 using Microsoft.IdentityModel.Clients.ActiveDirectory;
 using Microsoft.Office365.Discovery;
+using Microsoft.Office365.OAuth;
 using Microsoft.Office365.OutlookServices;
 
 namespace Office365Api.Helpers.Office365
@@ -42,8 +43,18 @@ namespace Office365Api.Helpers.Office365
             private set;
         }
 
+        public async Task Clear()
+        {
+            if (this.AuthenticationResult != null && this.AuthenticationContext != null)
+            {
+                await this.AuthenticationContext.LogoutAsync(this.AuthenticationResult.UserInfo.UniqueId);
+            }
+            this.AuthenticationContext = null;
+        }
+        
         public void EnsureAuthenticationContext(string authority)
         {
+            
             if (this.AuthenticationContext == null)
             {
                 var cache = _cachePersist.Read();
