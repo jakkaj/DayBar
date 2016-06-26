@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Media;
 using DaybarWPF.Model.Messages;
 using DayBar.Contract.Repo;
 using DayBar.Contract.UI;
@@ -24,5 +25,7 @@ namespace DaybarWPF.Util
             _cachePersist.Clear();
             new LogoutAndShowMainMessage().Send();
         }
+
+        
     }
 }

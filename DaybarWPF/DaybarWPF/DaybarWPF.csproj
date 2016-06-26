@@ -36,6 +36,9 @@
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
+  <PropertyGroup>
+    <ApplicationIcon>favicon.ico</ApplicationIcon>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="Autofac, Version=3.5.0.0, Culture=neutral, PublicKeyToken=17863af14b0044da, processorArchitecture=MSIL">
       <HintPath>..\packages\Autofac.3.5.2\lib\net40\Autofac.dll</HintPath>
@@ -149,12 +152,15 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="Glue\XDispatcher.cs" />
     <Compile Include="Glue\ProjectGlue.cs" />
     <Compile Include="Glue\WPFModule.cs" />
     <Compile Include="Model\Messages\HideEventPopupMessage.cs" />
     <Compile Include="Model\Messages\LogoutAndShowMainMessage.cs" />
     <Compile Include="Model\Messages\ShowEventPopupMessage.cs" />
+    <Compile Include="Util\ColorUtils.cs" />
     <Compile Include="Util\TaskBarUtils.cs" />
+    <Compile Include="Util\TimeUtils.cs" />
     <Compile Include="Util\UIUtils.cs" />
     <Compile Include="View\BarView.model.cs">
       <DependentUpon>BarView.xaml</DependentUpon>
@@ -165,6 +171,12 @@
     <Compile Include="View\Control\BarItemView.model.cs" />
     <Compile Include="View\Control\BarItemView.xaml.cs">
       <DependentUpon>BarItemView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\EventPopupView.model.cs">
+      <DependentUpon>EventPopupView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\EventPopupView.xaml.cs">
+      <DependentUpon>EventPopupView.xaml</DependentUpon>
     </Compile>
     <Compile Include="View\Control\NowView.model.cs">
       <DependentUpon>NowView.xaml</DependentUpon>
@@ -195,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\BarItemView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\EventPopupView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -242,7 +258,9 @@
       <SubType>Designer</SubType>
     </None>
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <Resource Include="favicon.ico" />
+  </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>

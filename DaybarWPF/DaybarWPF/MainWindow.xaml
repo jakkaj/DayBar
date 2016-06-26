@@ -7,6 +7,7 @@
         mc:Ignorable="d" Background="Transparent"
         WindowStyle="None"
         AllowsTransparency="True"
+        ShowInTaskbar="False"
         >
     <Window.Resources>
         <Storyboard x:Key="CalendarPop" AutoReverse="True" RepeatBehavior="Forever">

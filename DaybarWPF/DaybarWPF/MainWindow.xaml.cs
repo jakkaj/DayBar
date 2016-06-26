@@ -16,12 +16,14 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using Autofac;
+using DaybarWPF.Glue;
 using DaybarWPF.Model.Messages;
 using DaybarWPF.Util;
 using DaybarWPF.View;
 using DayBar.Contract.Office;
 using DayBar.Contract.Service;
 using Office365Api.Helpers;
+using XamlingCore.Portable.Contract.UI;
 using XamlingCore.Portable.Data.Glue;
 using XamlingCore.Portable.Messages.XamlingMessenger;
 
@@ -45,7 +47,9 @@ namespace DaybarWPF
             _deviceService = _container.Resolve<IDeviceService>();
             _userService = _container.Resolve<IUserService>();
             this.Register<LogoutAndShowMainMessage>(_reshowThis);
-            
+
+            XDispatcher.Dispatcher = Dispatcher;
+
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

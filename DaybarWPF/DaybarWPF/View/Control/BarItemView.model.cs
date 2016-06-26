@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
 using DaybarWPF.Model.Messages;
+using DaybarWPF.Util;
 using DayBar.Contract.Service;
 using DayBar.Entity.Calendars;
 using XamlingCore.Portable.Messages.XamlingMessenger;
@@ -51,32 +52,7 @@ namespace DaybarWPF.View.Control
 
             foreach (var cat in _entry.Categories)
             {
-                var cName = cat.ToLower();
-                if (cName.IndexOf("green") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.ForestGreen);
-                }
-                if (cName.IndexOf("blue") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.DodgerBlue);
-                }
-                if (cName.IndexOf("orange") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.Orange);
-                }
-                if (cName.IndexOf("purple") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.Purple);
-
-                }
-                if (cName.IndexOf("red") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.Red);
-                }
-                if (cName.IndexOf("yellow") != -1)
-                {
-                    Brush = new SolidColorBrush(Colors.Yellow);
-                }
+                Brush = ColorUtils.CatToColor(cat);
             }
 
         }

@@ -11,6 +11,7 @@ using DayBar.Contract.UI;
 using Office365Api.Helpers;
 using Office365Api.Helpers.Impl;
 using Office365Api.Helpers.Office365;
+using XamlingCore.Portable.Contract.UI;
 
 //using DayBar.UWP.Office365;
 
@@ -20,9 +21,10 @@ namespace DaybarWPF.Glue
     {
         protected override void Load(ContainerBuilder builder)
         {
-            builder.RegisterAssemblyTypes(typeof(WPFModule).Assembly)
-              .Where(t => t.Name.EndsWith("View") || t.Name.EndsWith("ViewModel"))
-              .AsSelf();
+            builder.RegisterAssemblyTypes(typeof (WPFModule).Assembly)
+                .Where(t => t.Name.EndsWith("View") || t.Name.EndsWith("ViewModel"))
+                .AsSelf()
+                .PropertiesAutowired();
 
             builder.RegisterType<UIUtils>().As<IUIUtils>();
             builder.RegisterType<AuthenticationHelper>().AsImplementedInterfaces().AsSelf().SingleInstance();
@@ -31,7 +33,9 @@ namespace DaybarWPF.Glue
             builder.RegisterType<CalendarHelper>().AsSelf().SingleInstance();
             builder.RegisterType<DeviceNetworkStatus>().AsImplementedInterfaces();
             builder.RegisterType<TokenGetService>().AsImplementedInterfaces();
-            
+
+            builder.RegisterType<XDispatcher>().As<IDispatcher>().SingleInstance();
+
             //builder.RegisterType<UserOperations>().SingleInstance();
             //builder.RegisterType<OutlookTokenGetService>().As<ITokenGetService>().SingleInstance();
             //builder.RegisterType<OutlookCalendarRepo>().AsImplementedInterfaces().SingleInstance();

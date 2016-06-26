@@ -37,7 +37,7 @@ namespace DaybarWPF.View
         {
             InitializeComponent();
 
-            this.Activated += BarView_Activated;
+            
             this._vm = vm;
             _deviceService = deviceService;
             _uiUtils = uiUtils;
@@ -48,6 +48,12 @@ namespace DaybarWPF.View
             this.MouseDoubleClick += BarView_MouseDoubleClick;
             this.MouseUp += BarView_MouseUp;
             this.Closed += BarView_Closed;
+            this.Loaded += BarView_Loaded;
+        }
+
+        private void BarView_Loaded(object sender, RoutedEventArgs e)
+        {
+            _position();
         }
 
         private void BarView_Closed(object sender, EventArgs e)
@@ -107,10 +113,7 @@ namespace DaybarWPF.View
             }
         }
 
-        private void BarView_Activated(object sender, EventArgs e)
-        {
-            _position();
-        }
+     
 
         void _position()
         {

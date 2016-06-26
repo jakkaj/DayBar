@@ -6,9 +6,11 @@ using System.Threading.Tasks;
 using System.Timers;
 using System.Windows.Threading;
 using Autofac;
+using DaybarWPF.Model.Messages;
 using DaybarWPF.View.Control;
 using DayBar.Contract.Service;
 using DayBar.Entity.Calendars;
+using XamlingCore.Portable.Messages.XamlingMessenger;
 using XamlingCore.Portable.View.ViewModel;
 
 namespace DaybarWPF.View
@@ -32,6 +34,8 @@ namespace DaybarWPF.View
 
         private DateTime? _lastRefresh = null;
 
+        private EventPopupView _popupView;
+
         public BarViewModel(ICalendarService calendarService, IUserService userService, ILifetimeScope scope, IDeviceService deviceService)
         {
             _calendarService = calendarService;
@@ -40,6 +44,9 @@ namespace DaybarWPF.View
             _deviceService = deviceService;
             NowViewModel = scope.Resolve<NowViewModel>();
             Width = deviceService.WindowWidth;
+
+            this.Register<ShowEventPopupMessage>(_showEventPopup);
+            this.Register<HideEventPopupMessage>(_hideEventPopup);
 
 
             _timer = new Timer();
@@ -54,6 +61,45 @@ namespace DaybarWPF.View
             
             _timer.Stop();
             
+        }
+
+        async void _showEventPopup(object message)
+        {
+            Dispatcher.Invoke(() =>
+            {
+                var m = message as ShowEventPopupMessage;
+
+                if (m?.Entry == null)
+                {
+                    return;
+                }
+
+                if (_popupView != null)
+                {
+                    _popupView.Close();
+                }
+
+                _popupView = _scope.Resolve<EventPopupView>();
+                
+
+                _popupView.Show();
+
+                _popupView.SetEvent(m.Entry, m.Offset);
+            });
+            
+        }
+
+        void _hideEventPopup()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                if (_popupView != null)
+                {
+                    _popupView.Close();
+                }
+                _popupView = null;
+
+            });
         }
 
 
