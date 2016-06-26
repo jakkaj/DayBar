@@ -184,6 +184,12 @@
     <Compile Include="View\Control\NowView.xaml.cs">
       <DependentUpon>NowView.xaml</DependentUpon>
     </Compile>
+    <Compile Include="View\Control\TimeLegendView.model.cs">
+      <DependentUpon>TimeLegendView.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="View\Control\TimeLegendView.xaml.cs">
+      <DependentUpon>TimeLegendView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="View\LoginView.xaml.cs">
       <DependentUpon>LoginView.xaml</DependentUpon>
     </Compile>
@@ -215,6 +221,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="View\Control\NowView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="View\Control\TimeLegendView.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -21,8 +21,10 @@ namespace DaybarWPF.View
         private readonly IUserService _userService;
         private readonly ILifetimeScope _scope;
         private readonly IDeviceService _deviceService;
+        private readonly IBarConfigService _barConfig;
 
         private List<BarItemViewModel> items;
+        private List<TimeLegendViewModel> _timeItems;
 
         private NowViewModel _nowViewModel;
 
@@ -36,12 +38,15 @@ namespace DaybarWPF.View
 
         private EventPopupView _popupView;
 
-        public BarViewModel(ICalendarService calendarService, IUserService userService, ILifetimeScope scope, IDeviceService deviceService)
+        public BarViewModel(ICalendarService calendarService, 
+            IUserService userService, ILifetimeScope scope, 
+            IDeviceService deviceService, IBarConfigService barConfig)
         {
             _calendarService = calendarService;
             _userService = userService;
             _scope = scope;
             _deviceService = deviceService;
+            _barConfig = barConfig;
             NowViewModel = scope.Resolve<NowViewModel>();
             Width = deviceService.WindowWidth;
 
@@ -147,6 +152,25 @@ namespace DaybarWPF.View
                 var wrapped = _wrap(events.Object);
 
                 Items = wrapped;
+
+
+                var ti = new List<TimeLegendViewModel>();
+
+
+                var config = await _barConfig.GetCalendarConfig();
+
+                var hours = config.EndHour - config.StartHour;
+
+                for (var i = 0; i <= hours; i++)
+                {
+                    var vm = _scope.Resolve<TimeLegendViewModel>();
+                    vm.Offset = await _deviceService.TimeToXPos(DateTime.Today.AddHours(config.StartHour).AddHours(i));
+                    vm.Time = (config.StartHour + i).ToString();
+                    ti.Add(vm);
+                }
+
+                TimeItems = ti;
+
                 IsLoading = false;
             });
             
@@ -205,5 +229,15 @@ namespace DaybarWPF.View
         }
 
         public Dispatcher MyDispatcher { get; set; }
+
+        public List<TimeLegendViewModel> TimeItems
+        {
+            get { return _timeItems; }
+            set
+            {
+                _timeItems = value; 
+                OnPropertyChanged();
+            }
+        }
     }
 }

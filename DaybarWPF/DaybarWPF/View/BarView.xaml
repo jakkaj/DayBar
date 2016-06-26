@@ -29,14 +29,52 @@
                 </EasingDoubleKeyFrame>
             </DoubleAnimationUsingKeyFrames>
         </Storyboard>
+        <Storyboard x:Key="TimeLengedFadeIn" >
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="grid">
+                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="Black">
+                    <EasingColorKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingColorKeyFrame.EasingFunction>
+                </EasingColorKeyFrame>
+            </ColorAnimationUsingKeyFrames>
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="itemsControl">
+                <EasingThicknessKeyFrame KeyTime="0:0:0.6" Value="0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+            </ThicknessAnimationUsingKeyFrames>
+        </Storyboard>
+        <Storyboard x:Key="TimeLegendFadeOut">
+            <ThicknessAnimationUsingKeyFrames Storyboard.TargetProperty="(FrameworkElement.Margin)" Storyboard.TargetName="itemsControl">
+                <EasingThicknessKeyFrame KeyTime="0:0:0.6" Value="0,-15,0,0">
+                    <EasingThicknessKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingThicknessKeyFrame.EasingFunction>
+                </EasingThicknessKeyFrame>
+            </ThicknessAnimationUsingKeyFrames>
+            <ColorAnimationUsingKeyFrames Storyboard.TargetProperty="(Panel.Background).(SolidColorBrush.Color)" Storyboard.TargetName="grid">
+                <EasingColorKeyFrame KeyTime="0:0:0.4" Value="#00000000">
+                    <EasingColorKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingColorKeyFrame.EasingFunction>
+                </EasingColorKeyFrame>
+            </ColorAnimationUsingKeyFrames>
+        </Storyboard>
     </Window.Resources>
+    <Window.Triggers>
+        <EventTrigger RoutedEvent="FrameworkElement.Loaded">
+            <BeginStoryboard Storyboard="{StaticResource TimeLengedFadeIn}"/>
+            <BeginStoryboard Storyboard="{StaticResource TimeLegendFadeOut}"/>
+        </EventTrigger>
+    </Window.Triggers>
     <!--<Window.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource LoadChaser}"/>
         </EventTrigger>
     </Window.Triggers>-->
 
-    <Grid>
+    <Grid x:Name="grid" Background="#00000000">
 
         <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch">
             <ItemsControl.ItemTemplate>
@@ -50,6 +88,20 @@
                 </ItemsPanelTemplate>
             </ItemsControl.ItemsPanel>
         </ItemsControl>
+
+        <ItemsControl x:Name="itemsControl" ItemsSource="{Binding TimeItems}" VerticalAlignment="Stretch" Margin="0,-15,0,0">
+            <ItemsControl.ItemTemplate>
+                <DataTemplate>
+                    <control:TimeLegendView/>
+                </DataTemplate>
+            </ItemsControl.ItemTemplate>
+            <ItemsControl.ItemsPanel>
+                <ItemsPanelTemplate>
+                    <Canvas></Canvas>
+                </ItemsPanelTemplate>
+            </ItemsControl.ItemsPanel>
+        </ItemsControl>
+
         <control:NowView DataContext="{Binding NowViewModel}" VerticalAlignment="Stretch"></control:NowView>
 
         <Rectangle x:Name="rectangle" Fill="BlueViolet" Height="3" Width="20" VerticalAlignment="Top" HorizontalAlignment="Left" RenderTransformOrigin="0.5,0.5" >

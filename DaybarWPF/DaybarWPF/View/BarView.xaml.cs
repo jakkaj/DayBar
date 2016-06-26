@@ -31,13 +31,18 @@ namespace DaybarWPF.View
         private BarViewModel _vm;
         private readonly IDeviceService _deviceService;
         private readonly IUIUtils _uiUtils;
+        private Storyboard _timeEnter;
+        private Storyboard _timeLeave;
 
         public BarView(BarViewModel vm, 
             IDeviceService deviceService, IUIUtils uiUtils)
         {
             InitializeComponent();
 
-            
+
+            _timeEnter = this.Resources["TimeLengedFadeIn"] as Storyboard;
+            _timeLeave = this.Resources["TimeLegendFadeOut"] as Storyboard;
+
             this._vm = vm;
             _deviceService = deviceService;
             _uiUtils = uiUtils;
@@ -49,6 +54,22 @@ namespace DaybarWPF.View
             this.MouseUp += BarView_MouseUp;
             this.Closed += BarView_Closed;
             this.Loaded += BarView_Loaded;
+            this.MouseEnter += BarView_MouseEnter;
+            this.MouseLeave += BarView_MouseLeave;
+        }
+
+        private void BarView_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _timeEnter.Stop();
+            _timeLeave.BeginTime = TimeSpan.Zero;
+            _timeLeave.Begin();
+        }
+
+        private void BarView_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
+        {
+            _timeLeave.Stop();
+            _timeEnter.BeginTime = TimeSpan.Zero;
+            _timeEnter.Begin();
         }
 
         private void BarView_Loaded(object sender, RoutedEventArgs e)
