@@ -23,7 +23,7 @@ namespace DaybarWPF.View.Control
             _deviceService = deviceService;
             _setOffset();
             var t = new Timer();
-            t.Interval = 5000;
+            t.Interval = 3000;
             t.Elapsed += T_Elapsed;
             t.Start();
         }
