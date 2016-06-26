@@ -165,7 +165,7 @@ namespace DaybarWPF.View
                 this.Height = 15;
                 this.Width = pHeight.X;
 
-                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width;
+                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width-20;
                 _deviceService.WindowWidth = this.Width;
                 _vm.Init();
 
