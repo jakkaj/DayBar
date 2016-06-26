@@ -69,6 +69,7 @@ namespace DaybarWPF.View
             _timeEnter.Stop();
             _timeLeave.BeginTime = TimeSpan.Zero;
             _timeLeave.Begin();
+            _vm.MouseLeave();
         }
 
         private void BarView_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -111,6 +112,22 @@ namespace DaybarWPF.View
             if (e.PropertyName == "IsLoading")
             {
                 _loadCheck();
+            }
+            if (e.PropertyName == "IsTomorrow")
+            {
+                Dispatcher.Invoke(_tomorrowCheck);
+            }
+        }
+
+        void _tomorrowCheck()
+        {
+            if (_vm.IsTomorrow)
+            {
+                border.Visibility = Visibility.Visible;
+            }
+            else
+            {
+               border.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -162,7 +179,7 @@ namespace DaybarWPF.View
                 
                 this.Left = 0;
                 this.Top = 0;
-                this.Height = 15;
+                this.Height = 30;
                 this.Width = pHeight.X;
 
                 ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width-20;

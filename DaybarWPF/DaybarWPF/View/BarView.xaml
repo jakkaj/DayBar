@@ -75,6 +75,8 @@
     </Window.Triggers>-->
 
     <Grid x:Name="grid" Background="#00000000">
+        
+        <Border x:Name="border" Background="#FF480000" Visibility="Collapsed"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
         <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch">
             <ItemsControl.ItemTemplate>

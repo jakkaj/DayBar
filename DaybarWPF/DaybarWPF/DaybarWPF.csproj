@@ -158,7 +158,10 @@
     <Compile Include="Model\Messages\EventAttractorMessage.cs" />
     <Compile Include="Model\Messages\HideEventPopupMessage.cs" />
     <Compile Include="Model\Messages\LogoutAndShowMainMessage.cs" />
+    <Compile Include="Model\Messages\RefreshCalendarMessage.cs" />
     <Compile Include="Model\Messages\ShowEventPopupMessage.cs" />
+    <Compile Include="Model\Messages\ShowSettingsMessage.cs" />
+    <Compile Include="Model\Messages\ShowTomorrowMessage.cs" />
     <Compile Include="Util\ColorUtils.cs" />
     <Compile Include="Util\TaskBarUtils.cs" />
     <Compile Include="Util\TimeUtils.cs" />

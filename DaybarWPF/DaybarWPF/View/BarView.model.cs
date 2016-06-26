@@ -39,6 +39,8 @@ namespace DaybarWPF.View
 
         private EventPopupView _popupView;
 
+        private bool _isTomorrow = false;
+
         public BarViewModel(ICalendarService calendarService, 
             IUserService userService, ILifetimeScope scope, 
             IDeviceService deviceService, IBarConfigService barConfig)
@@ -53,7 +55,8 @@ namespace DaybarWPF.View
 
             this.Register<ShowEventPopupMessage>(_showEventPopup);
             this.Register<HideEventPopupMessage>(_hideEventPopup);
-
+            this.Register<RefreshCalendarMessage>(_onRefreshCalendar);
+            this.Register<ShowTomorrowMessage>(_onShowTomorrow);
 
             _timer = new Timer();
             _timer.Interval = 5000;
@@ -67,6 +70,26 @@ namespace DaybarWPF.View
             
             _timer.Stop();
             
+        }
+
+        public void MouseLeave()
+        {
+            if (_isTomorrow)
+            {
+                IsTomorrow = false;
+                RefreshCalendar(true);
+            }
+        }
+
+        void _onShowTomorrow()
+        {
+            IsTomorrow = true;
+            RefreshCalendar(true, true);
+        }
+
+        void _onRefreshCalendar()
+        {
+            RefreshCalendar(true);
         }
 
         async void _showEventPopup(object message)
@@ -143,7 +166,7 @@ namespace DaybarWPF.View
         }
 
 
-        public void RefreshCalendar(bool showLoad = false)
+        public void RefreshCalendar(bool showLoad = false, bool tomorrow = false)
         {
             MyDispatcher.Invoke(async () =>
             {
@@ -164,7 +187,7 @@ namespace DaybarWPF.View
                     return;
                 }
 
-                var events = await _calendarService.GetToday();
+                var events = tomorrow ? await _calendarService.GetTomorrow() : await _calendarService.GetToday();
 
                 if (!events)
                 {
@@ -262,6 +285,16 @@ namespace DaybarWPF.View
             set
             {
                 _timeItems = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTomorrow
+        {
+            get { return _isTomorrow; }
+            set
+            {
+                _isTomorrow = value;
                 OnPropertyChanged();
             }
         }

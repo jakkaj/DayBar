@@ -25,14 +25,33 @@ namespace DaybarWPF.View.Control
     {
         private NowViewModel _vm;
         private Storyboard _timeAttractor;
+        private Storyboard _settingsOut;
+        private Storyboard _settingsIn;
         public NowView()
         {
             InitializeComponent();
             this.DataContextChanged += NowView_DataContextChanged;
+            this.MouseEnter += NowView_MouseEnter;
+            this.MouseLeave += NowView_MouseLeave;
             _timeAttractor = this.Resources["EventActiveAttractor"] as Storyboard;
+            _settingsOut = this.Resources["SettingsOut"] as Storyboard;
+            _settingsIn = this.Resources["SettingsIn"] as Storyboard;
             VisualStateManager.GoToState(this, "JustRight", false);
 
             this.Register<EventAttractorMessage>(_onAttractor);
+        }
+
+        private void NowView_MouseLeave(object sender, MouseEventArgs e)
+        {
+            _settingsIn.BeginTime = TimeSpan.Zero;
+            _settingsIn.Begin();
+
+        }
+
+        private void NowView_MouseEnter(object sender, MouseEventArgs e)
+        {
+            _settingsOut.BeginTime = TimeSpan.Zero;
+            _settingsOut.Begin();
         }
 
         void _onAttractor()
@@ -75,6 +94,21 @@ namespace DaybarWPF.View.Control
             {
                 VisualStateManager.GoToState(this, "JustRight", true);
             }
+        }
+
+        private void TextBlockRefresh_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            new RefreshCalendarMessage().Send();
+        }
+
+        private void TextBlockSettings_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            new ShowSettingsMessage().Send();
+        }
+
+        private void TextBlockTomorrow_OnMouseUp(object sender, MouseButtonEventArgs e)
+        {
+            new ShowTomorrowMessage().Send();
         }
     }
 }
