@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -110,8 +111,29 @@ namespace DaybarWPF.View
 
         private async void T_Elapsed(object sender, ElapsedEventArgs e)
         {
+            _scanEvents();
             if(_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromSeconds(60000))
             RefreshCalendar();
+        }
+
+        void _scanEvents()
+        {
+            if (_timeItems == null || Items.Count == 0)
+            {
+                return;
+            }
+
+            var now = DateTime.Now.AddMinutes(-5);
+            var nowten = DateTime.Now.AddMinutes(10);
+          
+            foreach (var item in items)
+            {
+                if (item.Entry.Start > now && item.Entry.Start < nowten)
+                {
+                    new EventAttractorMessage().Send();
+                    return;
+                }
+            }
         }
 
         public void Init()

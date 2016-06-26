@@ -9,9 +9,12 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using DaybarWPF.Model.Messages;
+using XamlingCore.Portable.Messages.XamlingMessenger;
 
 namespace DaybarWPF.View.Control
 {
@@ -21,13 +24,25 @@ namespace DaybarWPF.View.Control
     public partial class NowView : UserControl
     {
         private NowViewModel _vm;
-
+        private Storyboard _timeAttractor;
         public NowView()
         {
             InitializeComponent();
             this.DataContextChanged += NowView_DataContextChanged;
-
+            _timeAttractor = this.Resources["EventActiveAttractor"] as Storyboard;
             VisualStateManager.GoToState(this, "JustRight", false);
+
+            this.Register<EventAttractorMessage>(_onAttractor);
+        }
+
+        void _onAttractor()
+        {
+            Dispatcher.Invoke(() =>
+            {
+                _timeAttractor.BeginTime = TimeSpan.Zero;
+                _timeAttractor.Begin();
+
+            });
         }
 
         private void NowView_DataContextChanged(object sender, DependencyPropertyChangedEventArgs e)

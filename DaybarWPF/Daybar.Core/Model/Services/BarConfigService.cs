@@ -15,7 +15,7 @@ namespace Daybar.Core.Model.Services
             return new CalandarConfig
             {
                 StartHour = 7,
-                EndHour = 19
+                EndHour = 22
             };
         }
     }

@@ -155,6 +155,7 @@
     <Compile Include="Glue\XDispatcher.cs" />
     <Compile Include="Glue\ProjectGlue.cs" />
     <Compile Include="Glue\WPFModule.cs" />
+    <Compile Include="Model\Messages\EventAttractorMessage.cs" />
     <Compile Include="Model\Messages\HideEventPopupMessage.cs" />
     <Compile Include="Model\Messages\LogoutAndShowMainMessage.cs" />
     <Compile Include="Model\Messages\ShowEventPopupMessage.cs" />
