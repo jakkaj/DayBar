@@ -28,6 +28,10 @@ namespace DaybarWPF.View
 
         private double _width = 500;
 
+        private Timer _timer;
+
+        private DateTime? _lastRefresh = null;
+
         public BarViewModel(ICalendarService calendarService, IUserService userService, ILifetimeScope scope, IDeviceService deviceService)
         {
             _calendarService = calendarService;
@@ -38,29 +42,40 @@ namespace DaybarWPF.View
             Width = deviceService.WindowWidth;
 
 
-            var t = new Timer();
-            t.Interval = 60000;
-            t.Elapsed += T_Elapsed;
-            t.Start();
+            _timer = new Timer();
+            _timer.Interval = 5000;
+            _timer.Elapsed += T_Elapsed;
+            _timer.Start();
         }
+
+        public override void Dispose()
+        {
+            //base.Dispose();
+            
+            _timer.Stop();
+            
+        }
+
 
         private async void T_Elapsed(object sender, ElapsedEventArgs e)
         {
-            _refreshCalendar();
+            if(_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromSeconds(60000))
+            RefreshCalendar();
         }
 
         public void Init()
         {
             //find events
-            _refreshCalendar();
+            RefreshCalendar();
         }
 
 
-        void _refreshCalendar()
+        public void RefreshCalendar(bool showLoad = false)
         {
             MyDispatcher.Invoke(async () =>
             {
-                if (Items == null || Items?.Count == 0)
+                _lastRefresh = DateTime.Now;
+                if (Items == null || Items?.Count == 0 || showLoad)
                 {
                     IsLoading = true;
                 }

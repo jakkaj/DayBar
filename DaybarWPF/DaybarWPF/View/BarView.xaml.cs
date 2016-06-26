@@ -46,7 +46,19 @@ namespace DaybarWPF.View
             vm.PropertyChanged += Vm_PropertyChanged;
 
             this.MouseDoubleClick += BarView_MouseDoubleClick;
-          
+            this.MouseUp += BarView_MouseUp;
+            this.Closed += BarView_Closed;
+        }
+
+        private void BarView_Closed(object sender, EventArgs e)
+        {
+            _vm.Dispose();
+            _vm = null;
+        }
+
+        private void BarView_MouseUp(object sender, MouseButtonEventArgs e)
+        {
+            _vm.RefreshCalendar(true);
         }
 
         void _logoutAndShowMain()
@@ -76,6 +88,10 @@ namespace DaybarWPF.View
 
         void _doLoad()
         {
+            if (_vm == null)
+            {
+                return;
+            }
             var sb = this.Resources["LoadChaser"] as Storyboard;
            
             if (_vm.IsLoading)
