@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
+using DayBar.Contract.Service;
 using DayBar.Entity.Calendars;
 
 namespace DaybarWPF.View.Control
@@ -22,10 +23,12 @@ namespace DaybarWPF.View.Control
     public partial class EventPopupView : Window
     {
         private EventPopupViewModel _vm;
+        private readonly IDeviceService _deviceService;
         private CalendarEntry _entry;
-        public EventPopupView(EventPopupViewModel vm)
+        public EventPopupView(EventPopupViewModel vm, IDeviceService deviceService)
         {
             _vm = vm;
+            _deviceService = deviceService;
             DataContext = _vm;
             
             InitializeComponent();
@@ -59,6 +62,13 @@ namespace DaybarWPF.View.Control
 
             this.Left = offset;
             this.Top = 15;
+
+            var screenWidth = _deviceService.WindowWidth;
+
+            if (offset + this.Width > screenWidth)
+            {
+                this.Left = screenWidth - this.Width - 30;
+            } 
 
             var sb = this.Resources["Fader"] as Storyboard;
 
