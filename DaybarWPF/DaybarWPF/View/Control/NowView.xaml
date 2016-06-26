@@ -15,6 +15,6 @@
         </EventTrigger>
     </UserControl.Triggers>
     <Canvas>
-        <Ellipse Fill="YellowGreen" Width="12" Height="12" Margin="0, -6" Canvas.Left="{Binding Offset}"></Ellipse>   
+        <Ellipse Fill="DodgerBlue" Width="12" Height="12" Margin="0, -6" Canvas.Left="{Binding Offset}"></Ellipse>   
     </Canvas>
 </UserControl>

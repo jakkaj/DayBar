@@ -1,12 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Media;
+using DaybarWPF.Model.Messages;
 using DayBar.Contract.Service;
 using DayBar.Entity.Calendars;
+using XamlingCore.Portable.Messages.XamlingMessenger;
 using XamlingCore.Portable.View.ViewModel;
 
 namespace DaybarWPF.View.Control
@@ -18,11 +21,24 @@ namespace DaybarWPF.View.Control
 
         private double _offset;
         private double _width;
+
         private SolidColorBrush _brush;
 
         public BarItemViewModel(IDeviceService deviceService)
         {
             _deviceService = deviceService;
+        }
+
+        public void MouseIn()
+        {
+            new ShowEventPopupMessage(_entry, _offset).Send();
+            Debug.WriteLine($"Mouse in: {_offset}");
+        }
+
+        public void MouseOut()
+        {
+            new HideEventPopupMessage().Send();
+            Debug.WriteLine($"Mouse out: {_offset}");
         }
 
         void _setColor()

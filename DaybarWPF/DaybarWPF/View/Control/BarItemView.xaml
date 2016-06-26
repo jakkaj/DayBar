@@ -7,6 +7,6 @@
              mc:Ignorable="d" 
              d:DesignHeight="300" d:DesignWidth="300">
     <Canvas>
-        <Rectangle Fill="{Binding Brush}" Height="3" Margin="0" VerticalAlignment="Top" Canvas.Left="{Binding Offset}" Width="{Binding Width}"></Rectangle>
+        <Rectangle MouseEnter="UIElement_OnMouseEnter" MouseLeave="UIElement_OnMouseLeave"  Fill="{Binding Brush}" Height="3" Margin="0" VerticalAlignment="Top" Canvas.Left="{Binding Offset}" Width="{Binding Width}"></Rectangle>
     </Canvas>
 </UserControl>
