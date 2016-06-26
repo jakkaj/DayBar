@@ -14,6 +14,10 @@ namespace DaybarWPF.View.Control
     {
         private readonly IDeviceService _deviceService;
         private double _offset;
+
+        private bool _isTooLate;
+        private bool _isTooEarly;
+
         public NowViewModel(IDeviceService deviceService)
         {
             _deviceService = deviceService;
@@ -32,8 +36,26 @@ namespace DaybarWPF.View.Control
         async void _setOffset()
         {
             Offset = await _deviceService.TimeToXPos(DateTime.Now);
-        }
 
+            IsTooEarly = true;
+
+            if (Offset > _deviceService.WindowWidth)
+            {
+                Offset = _deviceService.WindowWidth - 15;
+                this.IsTooLate = true;
+                this.IsTooEarly = false;
+            }
+            else if (Offset < 0)
+            {
+                this.IsTooEarly = true;
+                this.IsTooLate = false;
+            }
+            else
+            {
+                this.IsTooLate = false;
+                this.IsTooEarly = false;
+            }
+        }
 
         public double Offset
         {
@@ -41,6 +63,26 @@ namespace DaybarWPF.View.Control
             set
             {
                 _offset = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTooLate
+        {
+            get { return _isTooLate; }
+            set
+            {
+                _isTooLate = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTooEarly
+        {
+            get { return _isTooEarly; }
+            set
+            {
+                _isTooEarly = value;
                 OnPropertyChanged();
             }
         }
