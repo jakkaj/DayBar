@@ -135,8 +135,11 @@ namespace DaybarWPF.View
         private async void T_Elapsed(object sender, ElapsedEventArgs e)
         {
             _scanEvents();
-            if(_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromSeconds(60000))
-            RefreshCalendar();
+            if (_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromMinutes(5))
+            {
+                RefreshCalendar();
+
+            }
         }
 
         void _scanEvents()
