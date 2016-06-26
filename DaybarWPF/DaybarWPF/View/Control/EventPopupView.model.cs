@@ -50,7 +50,7 @@ namespace DaybarWPF.View.Control
 
             var inMin = _entry.Start.Subtract(now);
             var endInMin = now.Subtract(_entry.End);
-
+            var startedButEndsInMin = _entry.End.Subtract(now);
             var lengthMins = _entry.End.Subtract(_entry.Start);
 
             if (_entry.End < now)
@@ -59,7 +59,7 @@ namespace DaybarWPF.View.Control
             }
             else if (_entry.Start < now && _entry.End > now)
             {
-                InMinutes = $"On Now - ends {TimeUtils.DoMintesTo(endInMin.TotalMinutes)}";
+                InMinutes = $"On Now - ends in {TimeUtils.DoMintesTo(startedButEndsInMin.TotalMinutes)}";
             }
             else
             {

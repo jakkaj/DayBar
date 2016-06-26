@@ -23,7 +23,7 @@ namespace DaybarWPF.View.Control
             _deviceService = deviceService;
             _setOffset();
             var t = new Timer();
-            t.Interval = 1000;
+            t.Interval = 5000;
             t.Elapsed += T_Elapsed;
             t.Start();
         }
@@ -36,8 +36,6 @@ namespace DaybarWPF.View.Control
         async void _setOffset()
         {
             Offset = await _deviceService.TimeToXPos(DateTime.Now);
-
-            IsTooEarly = true;
 
             if (Offset > _deviceService.WindowWidth)
             {
