@@ -165,6 +165,10 @@ namespace DaybarWPF.View
                 {
                     var vm = _scope.Resolve<TimeLegendViewModel>();
                     vm.Offset = await _deviceService.TimeToXPos(DateTime.Today.AddHours(config.StartHour).AddHours(i));
+                    if (i == hours)
+                    {
+                        vm.Offset -= 15;
+                    }
                     vm.Time = (config.StartHour + i).ToString();
                     ti.Add(vm);
                 }

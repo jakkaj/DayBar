@@ -15,6 +15,7 @@ namespace DayBar.Entity.Calendars
         public string Type { get; set; }
         public string Id { get; set; }
         public string Version { get; set; }
+        public string Location { get; set; }
 
         public List<string> Categories { get; set; } 
     }

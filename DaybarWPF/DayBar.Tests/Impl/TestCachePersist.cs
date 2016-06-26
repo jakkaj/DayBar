@@ -30,6 +30,11 @@ namespace DayBar.Tests.Impl
             return File.ReadAllBytes(f.FullName);
         }
 
+        public void Clear()
+        {
+            
+        }
+
         string _cacheFile()
         {
             var ad = Environment.GetFolderPath(Environment.SpecialFolder.LocalApplicationData);

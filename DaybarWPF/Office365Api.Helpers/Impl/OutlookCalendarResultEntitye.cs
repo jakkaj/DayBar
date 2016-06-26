@@ -15,7 +15,14 @@ namespace Office365Api.Helpers.Impl
         public string ChangeKey { get; set; }
 
         public List<string> Categories { get; set; }
+        public Location Location { get; set; }
     }
+
+    public class Location
+    {
+        public string DisplayName { get; set; }
+    }
+
     public class OutlookResult
     {
         public List<OutlookValue> value { get; set; }

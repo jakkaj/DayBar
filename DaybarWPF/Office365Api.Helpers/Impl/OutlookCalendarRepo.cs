@@ -94,7 +94,10 @@ namespace Office365Api.Helpers.Impl
                     Id = thing.Id,
                     Type = thing.Type,
                     Categories = thing.Categories,
-                    Version = version
+                    Version = version,
+                    Location = thing?.Location?.DisplayName
+                   
+                    
                 };
 
                 if (cal.Start.Date != cal.End.Date)
