@@ -19,6 +19,9 @@ namespace DaybarWPF
         {
             Glue = new ProjectGlue();
             Glue.Init();
+
+
+
         }
     }
 

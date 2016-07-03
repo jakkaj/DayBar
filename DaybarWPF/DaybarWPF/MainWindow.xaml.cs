@@ -23,6 +23,7 @@ using DaybarWPF.View;
 using DayBar.Contract.Office;
 using DayBar.Contract.Service;
 using Office365Api.Helpers;
+using Squirrel;
 using XamlingCore.Portable.Contract.UI;
 using XamlingCore.Portable.Data.Glue;
 using XamlingCore.Portable.Messages.XamlingMessenger;
@@ -59,6 +60,11 @@ namespace DaybarWPF
 
         async void _init()
         {
+            using (var mgr = new UpdateManager(@"https://daybar.blob.core.windows.net/app/install"))
+            {
+                await mgr.UpdateApp();
+            }
+
             _deviceService.SetWindowHandle(new WindowInteropHelper(Application.Current.MainWindow).Handle);
             await Task.Delay(1000);
             _showLogin(false);
