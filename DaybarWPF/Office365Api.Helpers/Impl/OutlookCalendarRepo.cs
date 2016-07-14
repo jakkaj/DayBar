@@ -95,7 +95,10 @@ namespace Office365Api.Helpers.Impl
                     Type = thing.Type,
                     Categories = thing.Categories,
                     Version = version,
-                    Location = thing?.Location?.DisplayName
+                    Location = thing?.Location?.DisplayName,
+                    Attendees = thing.Attendees,
+                    Organizer = thing.Organizer,
+                    OdataId = thing.OdataId
                    
                     
                 };

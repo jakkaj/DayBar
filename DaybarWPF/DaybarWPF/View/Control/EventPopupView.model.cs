@@ -20,6 +20,10 @@ namespace DaybarWPF.View.Control
         private string _inMinutes;
         private string _atText;
         private Timer _timer;
+
+        private string _attendeesText;
+        private string _createdText;
+
         public EventPopupViewModel()
         {
             _timer = new Timer();
@@ -69,6 +73,25 @@ namespace DaybarWPF.View.Control
             AtText = $"{_entry.Start.ToShortTimeString()} and runs for {TimeUtils.TimeSpanTo(lengthMins.TotalMinutes)}";
 
 
+            var attList = new List<string>();
+
+            CreatedText =
+                $"{_entry.Organizer.EmailAddress.Name} ({_entry.Organizer.EmailAddress.Address})";
+
+            if (_entry.Attendees != null)
+            {
+                foreach (var attendee in _entry.Attendees)
+                {
+                    //is this person me?
+                    if (_entry.OdataId.ToLower().Contains(attendee.EmailAddress.Address.ToLower()))
+                    {
+                        continue;
+                    }
+                    attList.Add($"{attendee?.EmailAddress.Name} ({attendee.EmailAddress.Address})");
+                }
+            }
+
+            AttendeesText = String.Join(", ", attList);
         }
 
         public CalendarEntry Entry
@@ -108,6 +131,26 @@ namespace DaybarWPF.View.Control
             set
             {
                 _atText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string AttendeesText
+        {
+            get { return _attendeesText; }
+            set
+            {
+                _attendeesText = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public string CreatedText
+        {
+            get { return _createdText; }
+            set
+            {
+                _createdText = value; 
                 OnPropertyChanged();
             }
         }
