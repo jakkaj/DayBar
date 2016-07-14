@@ -103,7 +103,7 @@ namespace DaybarWPF.View.Control
 
         private void TextBlockSettings_OnMouseUp(object sender, MouseButtonEventArgs e)
         {
-            new ShowSettingsMessage().Send();
+            new LogoutAndShowMainMessage().Send();
         }
 
         private void TextBlockTomorrow_OnMouseUp(object sender, MouseButtonEventArgs e)

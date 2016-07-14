@@ -44,7 +44,7 @@ namespace DaybarWPF.View.Control
 
         void _setColor()
         {
-            if (_entry.Categories == null)
+            if (_entry.Categories == null || _entry.Categories.Count == 0)
             {
                 Brush = new SolidColorBrush(Colors.DodgerBlue);
                 return;
@@ -55,6 +55,7 @@ namespace DaybarWPF.View.Control
                 Brush = ColorUtils.CatToColor(cat);
             }
 
+           
         }
 
         async void _setWidth()

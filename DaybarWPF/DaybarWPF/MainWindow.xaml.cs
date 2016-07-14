@@ -39,6 +39,10 @@ namespace DaybarWPF
         private IDeviceService _deviceService;
 
         private IUserService _userService;
+
+
+        private BarView _barWindow;
+
         public MainWindow()
         {
             InitializeComponent();
@@ -60,11 +64,19 @@ namespace DaybarWPF
 
         async void _init()
         {
-            using (var mgr = new UpdateManager(@"https://daybar.blob.core.windows.net/app/install"))
-            {
-                await mgr.UpdateApp();
-            }
 
+#if DEBUG == false
+            try
+            {
+                using (var mgr = new UpdateManager(@"https://daybar.blob.core.windows.net/app/install"))
+                {
+                    await mgr.UpdateApp();
+                }
+
+            }
+            catch  { }
+          
+#endif
             _deviceService.SetWindowHandle(new WindowInteropHelper(Application.Current.MainWindow).Handle);
             await Task.Delay(1000);
             _showLogin(false);
@@ -106,6 +118,12 @@ namespace DaybarWPF
         {
             Dispatcher.Invoke(() =>
             {
+                if (_barWindow != null)
+                {
+                    _barWindow.Close();
+                    _barWindow = null;
+                } 
+
                 this.Visibility = Visibility.Visible;
                 this.Activate();
                 var sb = this.Resources["UnFader"] as Storyboard;
@@ -128,9 +146,9 @@ namespace DaybarWPF
 
             sb.Completed += Sb_Completed;
 
-            var barWindow = _container.Resolve<BarView>();
+            _barWindow = _container.Resolve<BarView>();
 
-            barWindow.Show();
+            _barWindow.Show();
         }
 
         private void Sb_Completed(object sender, EventArgs e)

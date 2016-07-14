@@ -78,10 +78,11 @@
         
         <Border x:Name="border" Background="#FF480000" Visibility="Collapsed"  VerticalAlignment="Stretch" HorizontalAlignment="Stretch"/>
 
-        <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch">
+
+        <ItemsControl x:Name="itemsControl" ItemsSource="{Binding TimeItems}" VerticalAlignment="Stretch" Margin="0,-15,0,0">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <control:BarItemView/>
+                    <control:TimeLegendView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
@@ -91,10 +92,10 @@
             </ItemsControl.ItemsPanel>
         </ItemsControl>
 
-        <ItemsControl x:Name="itemsControl" ItemsSource="{Binding TimeItems}" VerticalAlignment="Stretch" Margin="0,-15,0,0">
+        <ItemsControl ItemsSource="{Binding Items}" VerticalAlignment="Stretch">
             <ItemsControl.ItemTemplate>
                 <DataTemplate>
-                    <control:TimeLegendView/>
+                    <control:BarItemView/>
                 </DataTemplate>
             </ItemsControl.ItemTemplate>
             <ItemsControl.ItemsPanel>
