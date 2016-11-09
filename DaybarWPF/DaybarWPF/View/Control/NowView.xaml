@@ -8,13 +8,44 @@
              d:DesignHeight="300" d:DesignWidth="300">
     <UserControl.Resources>
         <Storyboard x:Key="NowFader"/>
+        <Storyboard x:Key="Expando">
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleX)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+            <DoubleAnimationUsingKeyFrames Storyboard.TargetProperty="(UIElement.RenderTransform).(TransformGroup.Children)[0].(ScaleTransform.ScaleY)" Storyboard.TargetName="ellipse">
+                <EasingDoubleKeyFrame KeyTime="0:0:0.5" Value="4">
+                    <EasingDoubleKeyFrame.EasingFunction>
+                        <CubicEase EasingMode="EaseOut"/>
+                    </EasingDoubleKeyFrame.EasingFunction>
+                </EasingDoubleKeyFrame>
+            </DoubleAnimationUsingKeyFrames>
+        </Storyboard>
     </UserControl.Resources>
     <UserControl.Triggers>
         <EventTrigger RoutedEvent="FrameworkElement.Loaded">
             <BeginStoryboard Storyboard="{StaticResource NowFader}"/>
+            <BeginStoryboard Storyboard="{StaticResource Expando}"/>
         </EventTrigger>
     </UserControl.Triggers>
     <Canvas>
-        <Ellipse Fill="DodgerBlue" Width="12" Height="12" Margin="0, -6" Canvas.Left="{Binding Offset}"></Ellipse>   
+        <Grid Canvas.Left="{Binding Offset}">
+            <Ellipse Fill="DodgerBlue" Width="12" Height="12" Margin="0, -6" ></Ellipse>
+            <Ellipse x:Name="ellipse" Fill="DodgerBlue" Width="12" Height="12" Canvas.Top="-6" RenderTransformOrigin="0.5,0.5">
+                <Ellipse.RenderTransform>
+                    <TransformGroup>
+                        <ScaleTransform/>
+                        <SkewTransform/>
+                        <RotateTransform/>
+                        <TranslateTransform/>
+                    </TransformGroup>
+                </Ellipse.RenderTransform>
+            </Ellipse>
+        </Grid>
+
+        <Button />
     </Canvas>
 </UserControl>

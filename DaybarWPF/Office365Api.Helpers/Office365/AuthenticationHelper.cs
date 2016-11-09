@@ -78,18 +78,24 @@ namespace Office365Api.Helpers.Office365
             }
            
             var p = new PlatformParameters(show ? PromptBehavior.Always : PromptBehavior.Never, _deviceService.WindowHandle);
-            this.AuthenticationResult =
-                await this.AuthenticationContext.AcquireTokenAsync(
-                    Office365ServicesUris.AADGraphAPIResourceId,
-                    ClientId,
-                    new Uri(RedirectUri),
-                    p);
 
-            var tokenCache = AuthenticationContext.TokenCache.Serialize();
-            
-            _cachePersist.Write(tokenCache);
+            try
+            {
+                this.AuthenticationResult =
+               await this.AuthenticationContext.AcquireTokenAsync(
+                   Office365ServicesUris.AADGraphAPIResourceId,
+                   ClientId,
+                   new Uri(RedirectUri),
+                   p);
 
-            return !string.IsNullOrWhiteSpace(this.AuthenticationResult.AccessToken);
+                var tokenCache = AuthenticationContext.TokenCache.Serialize();
+
+                _cachePersist.Write(tokenCache);
+            }
+            catch { }
+           
+
+            return !string.IsNullOrWhiteSpace(this?.AuthenticationResult?.AccessToken);
         }
 
         //public void EnsureAuthenticationContext(TokenCache tokenCache)
