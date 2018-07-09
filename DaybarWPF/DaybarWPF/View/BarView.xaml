@@ -9,10 +9,12 @@
         
         
         WindowStyle="None" Topmost="True"
-        Title="MainWindow" Height="350" Margin="0" Padding="0" 
+        Title="DayBar" Height="350" Margin="0" Padding="0" 
         Background="Transparent"
         ShowInTaskbar="False"
-        AllowsTransparency="True">
+        AllowsTransparency="True"
+        Loaded="BarView_OnLoaded"
+        >
     <Window.Resources>
         <EasingDoubleKeyFrame x:Key="myEasingKey" KeyTime="0:0:2" Value="500">
             <EasingDoubleKeyFrame.EasingFunction>

@@ -8,6 +8,8 @@
         WindowStyle="None"
         AllowsTransparency="True"
         ShowInTaskbar="False"
+        Loaded="MainWindow_OnLoaded"
+        Title="DayBar"
         >
     <Window.Resources>
         <Storyboard x:Key="CalendarPop" AutoReverse="True" RepeatBehavior="Forever">

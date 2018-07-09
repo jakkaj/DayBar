@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.InteropServices;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows;
@@ -9,6 +10,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Forms;
 using System.Windows.Input;
+using System.Windows.Interop;
 using System.Windows.Media;
 using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
@@ -34,7 +36,7 @@ namespace DaybarWPF.View
         private Storyboard _timeEnter;
         private Storyboard _timeLeave;
 
-        public BarView(BarViewModel vm, 
+        public BarView(BarViewModel vm,
             IDeviceService deviceService, IUIUtils uiUtils)
         {
             InitializeComponent();
@@ -92,7 +94,7 @@ namespace DaybarWPF.View
 
         private void BarView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            
+
         }
 
         void _logoutAndShowMain()
@@ -127,7 +129,7 @@ namespace DaybarWPF.View
             }
             else
             {
-               border.Visibility = Visibility.Collapsed;
+                border.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -143,7 +145,7 @@ namespace DaybarWPF.View
                 return;
             }
             var sb = this.Resources["LoadChaser"] as Storyboard;
-           
+
             if (_vm.IsLoading)
             {
                 sb.BeginTime = TimeSpan.Zero;
@@ -157,7 +159,7 @@ namespace DaybarWPF.View
             }
         }
 
-     
+
 
         void _position()
         {
@@ -176,13 +178,13 @@ namespace DaybarWPF.View
 
                 var pLeft = this.PointFromScreen(new Point(tb.Left, tb.Top));
                 var pHeight = this.PointFromScreen(new Point(tb.Width, tb.Height));
-                
+
                 this.Left = 0;
                 this.Top = 0;
                 this.Height = 30;
                 this.Width = pHeight.X;
 
-                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width-20;
+                ((EasingDoubleKeyFrame)Resources["myEasingKey"]).Value = this.Width - 20;
                 _deviceService.WindowWidth = this.Width;
                 _vm.Init();
 
@@ -203,5 +205,80 @@ namespace DaybarWPF.View
             //this.Width = pHeight.X;
             //var t = tb;
         }
+
+        private void BarView_OnLoaded(object sender, RoutedEventArgs e)
+        {
+
+            WindowInteropHelper wndHelper = new WindowInteropHelper(this);
+
+            int exStyle = (int)GetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE);
+
+            exStyle |= (int)ExtendedWindowStyles.WS_EX_TOOLWINDOW;
+            SetWindowLong(wndHelper.Handle, (int)GetWindowLongFields.GWL_EXSTYLE, (IntPtr)exStyle);
+
+        }
+
+        #region Window styles
+        [Flags]
+        public enum ExtendedWindowStyles
+        {
+            // ...
+            WS_EX_TOOLWINDOW = 0x00000080,
+            // ...
+        }
+
+        public enum GetWindowLongFields
+        {
+            // ...
+            GWL_EXSTYLE = (-20),
+            // ...
+        }
+
+        [DllImport("user32.dll")]
+        public static extern IntPtr GetWindowLong(IntPtr hWnd, int nIndex);
+
+        public static IntPtr SetWindowLong(IntPtr hWnd, int nIndex, IntPtr dwNewLong)
+        {
+            int error = 0;
+            IntPtr result = IntPtr.Zero;
+            // Win32 SetWindowLong doesn't clear error on success
+            SetLastError(0);
+
+            if (IntPtr.Size == 4)
+            {
+                // use SetWindowLong
+                Int32 tempResult = IntSetWindowLong(hWnd, nIndex, IntPtrToInt32(dwNewLong));
+                error = Marshal.GetLastWin32Error();
+                result = new IntPtr(tempResult);
+            }
+            else
+            {
+                // use SetWindowLongPtr
+                result = IntSetWindowLongPtr(hWnd, nIndex, dwNewLong);
+                error = Marshal.GetLastWin32Error();
+            }
+
+            if ((result == IntPtr.Zero) && (error != 0))
+            {
+                throw new System.ComponentModel.Win32Exception(error);
+            }
+
+            return result;
+        }
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLongPtr", SetLastError = true)]
+        private static extern IntPtr IntSetWindowLongPtr(IntPtr hWnd, int nIndex, IntPtr dwNewLong);
+
+        [DllImport("user32.dll", EntryPoint = "SetWindowLong", SetLastError = true)]
+        private static extern Int32 IntSetWindowLong(IntPtr hWnd, int nIndex, Int32 dwNewLong);
+
+        private static int IntPtrToInt32(IntPtr intPtr)
+        {
+            return unchecked((int)intPtr.ToInt64());
+        }
+
+        [DllImport("kernel32.dll", EntryPoint = "SetLastError")]
+        public static extern void SetLastError(int dwErrorCode);
+        #endregion
     }
 }
