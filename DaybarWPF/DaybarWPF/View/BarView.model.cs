@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -38,6 +39,8 @@ namespace DaybarWPF.View
 
         private EventPopupView _popupView;
 
+        private bool _isTomorrow = false;
+
         public BarViewModel(ICalendarService calendarService, 
             IUserService userService, ILifetimeScope scope, 
             IDeviceService deviceService, IBarConfigService barConfig)
@@ -52,7 +55,8 @@ namespace DaybarWPF.View
 
             this.Register<ShowEventPopupMessage>(_showEventPopup);
             this.Register<HideEventPopupMessage>(_hideEventPopup);
-
+            this.Register<RefreshCalendarMessage>(_onRefreshCalendar);
+            this.Register<ShowTomorrowMessage>(_onShowTomorrow);
 
             _timer = new Timer();
             _timer.Interval = 5000;
@@ -66,6 +70,26 @@ namespace DaybarWPF.View
             
             _timer.Stop();
             
+        }
+
+        public void MouseLeave()
+        {
+            if (_isTomorrow)
+            {
+                IsTomorrow = false;
+                RefreshCalendar(true);
+            }
+        }
+
+        void _onShowTomorrow()
+        {
+            IsTomorrow = true;
+            RefreshCalendar(true, true);
+        }
+
+        void _onRefreshCalendar()
+        {
+            RefreshCalendar(true);
         }
 
         async void _showEventPopup(object message)
@@ -110,8 +134,32 @@ namespace DaybarWPF.View
 
         private async void T_Elapsed(object sender, ElapsedEventArgs e)
         {
-            if(_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromSeconds(60000))
-            RefreshCalendar();
+            _scanEvents();
+            if (_lastRefresh == null || DateTime.Now.Subtract(_lastRefresh.Value) > TimeSpan.FromMinutes(5))
+            {
+                RefreshCalendar();
+
+            }
+        }
+
+        void _scanEvents()
+        {
+            if (_timeItems == null || Items.Count == 0)
+            {
+                return;
+            }
+
+            var now = DateTime.Now.AddMinutes(-5);
+            var nowten = DateTime.Now.AddMinutes(10);
+          
+            foreach (var item in items)
+            {
+                if (item.Entry.Start > now && item.Entry.Start < nowten)
+                {
+                    new EventAttractorMessage().Send();
+                    return;
+                }
+            }
         }
 
         public void Init()
@@ -121,7 +169,7 @@ namespace DaybarWPF.View
         }
 
 
-        public void RefreshCalendar(bool showLoad = false)
+        public void RefreshCalendar(bool showLoad = false, bool tomorrow = false)
         {
             MyDispatcher.Invoke(async () =>
             {
@@ -142,7 +190,7 @@ namespace DaybarWPF.View
                     return;
                 }
 
-                var events = await _calendarService.GetToday();
+                var events = tomorrow ? await _calendarService.GetTomorrow() : await _calendarService.GetToday();
 
                 if (!events)
                 {
@@ -240,6 +288,16 @@ namespace DaybarWPF.View
             set
             {
                 _timeItems = value; 
+                OnPropertyChanged();
+            }
+        }
+
+        public bool IsTomorrow
+        {
+            get { return _isTomorrow; }
+            set
+            {
+                _isTomorrow = value;
                 OnPropertyChanged();
             }
         }

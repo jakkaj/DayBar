@@ -8,6 +8,7 @@ namespace DayBar.Entity.Calendars
 {
     public class CalendarEntry
     {
+        public string OdataId { get; set; }
         public string Subject { get; set; }
         public DateTime Start { get; set; }
         public DateTime End { get; set; }
@@ -17,6 +18,8 @@ namespace DayBar.Entity.Calendars
         public string Version { get; set; }
         public string Location { get; set; }
 
-        public List<string> Categories { get; set; } 
+        public List<string> Categories { get; set; }
+        public List<Attendee> Attendees { get; set; }
+        public Attendee Organizer { get; set; }
     }
 }

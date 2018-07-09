@@ -51,6 +51,7 @@ namespace DaybarWPF.View
             vm.PropertyChanged += Vm_PropertyChanged;
 
             this.MouseDoubleClick += BarView_MouseDoubleClick;
+            this.MouseRightButtonUp += BarView_MouseRightButtonUp;
             this.MouseUp += BarView_MouseUp;
             this.Closed += BarView_Closed;
             this.Loaded += BarView_Loaded;
@@ -58,11 +59,17 @@ namespace DaybarWPF.View
             this.MouseLeave += BarView_MouseLeave;
         }
 
+        private void BarView_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _logoutAndShowMain();
+        }
+
         private void BarView_MouseLeave(object sender, System.Windows.Input.MouseEventArgs e)
         {
             _timeEnter.Stop();
             _timeLeave.BeginTime = TimeSpan.Zero;
             _timeLeave.Begin();
+            _vm.MouseLeave();
         }
 
         private void BarView_MouseEnter(object sender, System.Windows.Input.MouseEventArgs e)
@@ -85,7 +92,7 @@ namespace DaybarWPF.View
 
         private void BarView_MouseUp(object sender, MouseButtonEventArgs e)
         {
-            _vm.RefreshCalendar(true);
+            
         }
 
         void _logoutAndShowMain()
@@ -97,7 +104,7 @@ namespace DaybarWPF.View
 
         private void BarView_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         {
-            _logoutAndShowMain();
+            _vm.RefreshCalendar(true);
         }
 
         private void Vm_PropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
@@ -105,6 +112,22 @@ namespace DaybarWPF.View
             if (e.PropertyName == "IsLoading")
             {
                 _loadCheck();
+            }
+            if (e.PropertyName == "IsTomorrow")
+            {
+                Dispatcher.Invoke(_tomorrowCheck);
+            }
+        }
+
+        void _tomorrowCheck()
+        {
+            if (_vm.IsTomorrow)
+            {
+                border.Visibility = Visibility.Visible;
+            }
+            else
+            {
+               border.Visibility = Visibility.Collapsed;
             }
         }
 
@@ -156,10 +179,10 @@ namespace DaybarWPF.View
                 
                 this.Left = 0;
                 this.Top = 0;
-                this.Height = 3;
+                this.Height = 30;
                 this.Width = pHeight.X;
 
-                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width;
+                ((EasingDoubleKeyFrame) Resources["myEasingKey"]).Value = this.Width-20;
                 _deviceService.WindowWidth = this.Width;
                 _vm.Init();
 
